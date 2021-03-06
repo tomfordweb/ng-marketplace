@@ -5,9 +5,9 @@ import { of, Observable, EMPTY } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
 import { GameVersion } from "./game-version";
 import { GameVersionsApiResponse } from "./gane-versions-api-response";
-import { INDEXED_DB_CONFIG } from "../tokens";
-import { IndexedDbConfig } from "../indexed-db-config";
-import { CachedRequestService } from "../cached-request.service";
+import { INDEXED_DB_CONFIG } from "../../tokens";
+import { IndexedDbConfig } from "../../indexed-db-config";
+import { CachedRequestService } from "../../cached-request.service";
 
 @Injectable()
 export class GameVersionService {
@@ -18,7 +18,6 @@ export class GameVersionService {
   ) {}
 
   getGames(): Observable<Array<GameVersion>> {
-    console.log(this.config);
     return (
       this.cachedRequestService
         // attempt to get from cache

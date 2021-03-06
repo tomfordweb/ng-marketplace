@@ -10,7 +10,7 @@ import { gameVersionsReducer } from "./state/game-versions.reducer";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { environment } from "../environments/environment"; // Angular CLI environment
 import { DBConfig, NgxIndexedDBModule } from "ngx-indexed-db";
-import { GameVersionModule } from "./game-version/game-version.module";
+import { GameVersionModule } from "./lib/game-version/game-version.module";
 
 const dbConfig: DBConfig = {
   name: "MyDb",

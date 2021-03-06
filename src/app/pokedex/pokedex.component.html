@@ -1,1 +1,7 @@
-<p>pokedex works!</p>
+<div *ngIf="pokemon$ | async as pokemon; else loading">
+  <ng-container *ngIf="pokemon.length; else noItems">
+    <div *ngFor="let p of pokemon"></div>
+  </ng-container>
+  <ng-template #noItems>No Pokemon!</ng-template>
+</div>
+<ng-template #loading>loading animation...</ng-template>

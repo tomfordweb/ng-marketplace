@@ -1,8 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { select, Store } from "@ngrx/store";
-import { GameVersionService } from "./game-version/game-version.service";
-import { GameVersionsApiResponse } from "./game-version/gane-versions-api-response";
+import { GameVersionService } from "./lib/game-version/game-version.service";
+import { GameVersionsApiResponse } from "./lib/game-version/gane-versions-api-response";
 import { AppState } from "./state/app.state";
 import { retreiveGameVersionList } from "./state/game-versions.actions";
 import { selectGameVersions } from "./state/game-versions.selector";
@@ -22,8 +22,8 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.gameVersionsService.getGames().subscribe((GameVersion) => {
-      this.store.dispatch(retreiveGameVersionList({ GameVersion }));
+    this.gameVersionsService.getGames().subscribe((GameVersions) => {
+      this.store.dispatch(retreiveGameVersionList({ GameVersions }));
     });
   }
 }

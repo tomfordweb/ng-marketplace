@@ -6,6 +6,7 @@ import { IndexedDbConfig } from "./indexed-db-config";
 @Injectable({ providedIn: "root" })
 export class CachedRequestService {
   constructor(private db: NgxIndexedDBService) {}
+
   getList$(config: IndexedDbConfig) {
     return this.db.getAll(config.key).pipe(
       tap((items) => {
@@ -15,6 +16,14 @@ export class CachedRequestService {
         }
       })
     );
+  }
+
+  getById$(config: IndexedDbConfig, id: number) {
+    return this.db.getByID(config.key, id);
+  }
+
+  updateEntity$(config: IndexedDbConfig, data: any) {
+    this.db.update(config.key, data);
   }
   update$(config: IndexedDbConfig, data: any[]) {
     data.forEach((item) => this.db.update(config.key, item));
