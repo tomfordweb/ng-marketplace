@@ -1,6 +1,7 @@
 import { createSelector } from "@ngrx/store";
 import { GameVersion } from "../lib/game-version/game-version";
 import { AppState } from "./app.state";
+import { selectRouteParams } from "./router.selectors";
 
 export const selectGameVersions = createSelector(
   (state: any) => state.gameVersions,
@@ -17,4 +18,13 @@ export const selectActiveGameVersion = createSelector(
   (state: any) => state.gameVersions,
   (gameVersions: GameVersion[]) =>
     gameVersions.filter((game) => game.active === true)[0] || null
+);
+
+export const selectGameVersionByRouterParam = createSelector(
+  selectRouteParams,
+  selectGameVersions,
+  (routerParams, gameVersions) =>
+    gameVersions.filter(
+      (version) => version.name === routerParams.version
+    )[0] || null
 );

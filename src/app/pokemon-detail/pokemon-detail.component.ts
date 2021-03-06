@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { select, Store } from "@ngrx/store";
-import { pluck, switchMap, take, tap } from "rxjs/operators";
 import { selectActivePokemonByRouterParam } from "../state/pokemon.selector";
 
 @Component({

@@ -4,7 +4,6 @@ import { GameVersion } from "../lib/game-version/game-version";
 import { Pokedex } from "../lib/pokedex/pokedex";
 import { Pokemon } from "../lib/pokemon/pokemon";
 import { AppState } from "./app.state";
-import { selectActivePokedex } from "./pokedex.selector";
 import { selectRouteParams } from "./router.selectors";
 
 export const selectAllPokemon = createSelector(
