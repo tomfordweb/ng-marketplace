@@ -1,6 +1,0 @@
-<div *ngIf="pokemon$ | async as pokemon; else loading">
-  <ng-container *ngIf="!!pokemon">
-    <h1>{{ pokemon.name }}</h1>
-  </ng-container>
-</div>
-<ng-template #loading>loading animation...</ng-template>

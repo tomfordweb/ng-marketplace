@@ -13,9 +13,9 @@ export const selectPokedexes = createSelector(
 );
 
 export const selectActivePokedexByGameVersionRouterParam = createSelector(
-  selectPokedexes,
   selectGameVersionByRouterParam,
-  (allPokedexes: Pokedex[], currentGameVersion: GameVersion) =>
+  selectPokedexes,
+  (currentGameVersion: GameVersion, allPokedexes: Pokedex[]) =>
     allPokedexes.filter((pokedex) => pokedex.id === currentGameVersion.id)[0] ||
     null
 );

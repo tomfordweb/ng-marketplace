@@ -25,7 +25,9 @@ export class PokemonService {
           catchError((error) => {
             // If we failed to retreive it from the cache, return the api request
             return this.http
-              .get<Pokemon>("https://pokeapi.co/api/v2/version-group")
+              .get<Pokemon>(
+                `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`
+              )
               .pipe(
                 // store the data in indexeddb!
                 tap((pokemonResponse: Pokemon) =>

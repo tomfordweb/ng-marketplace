@@ -15,7 +15,6 @@ import { selectGameVersions } from "./state/game-versions.selector";
 })
 export class AppComponent {
   title = "ng-marketplace";
-  allPokemonGames$ = this.store.pipe(select(selectGameVersions));
 
   allPokemonGamesRequest$ = this.gameVersionsService
     .getGames()

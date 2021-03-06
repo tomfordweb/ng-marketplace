@@ -10,6 +10,7 @@ import { setActiveGameVersion } from "../state/game-versions.actions";
 import {
   selectGameVersionByName,
   selectGameVersionByRouterParam,
+  selectGameVersions,
 } from "../state/game-versions.selector";
 import { retreivedPokedexContents } from "../state/pokedex.actions";
 import { retrievedPokemonInformationFromPokedexResponse } from "../state/pokemon.actions";
@@ -21,15 +22,18 @@ import { selectActivePokedexByGameVersionRouterParam } from "../state/pokedex.se
   styleUrls: ["./pokedex.component.scss"],
 })
 export class PokedexComponent {
+  allPokemonGames$ = this.store.pipe(select(selectGameVersions));
+
   currentPokedex$ = this.store.pipe(
     select(selectActivePokedexByGameVersionRouterParam),
     tap((pokedex) => console.log(pokedex))
   );
 
+  currentGame$ = this.store.pipe(select(selectGameVersionByRouterParam));
+
   // take the current game version based on router params
   // and then grab the pokedex relative the the :version router param
-  pokedexRequest$ = this.store.pipe(
-    select(selectGameVersionByRouterParam),
+  pokedexRequest$ = this.currentGame$.pipe(
     switchMap((gameVersion: GameVersion) =>
       // Now that we have our GameVersion, get the Pokedex
       this.pokedexService.getPokedexByGameVersion$(gameVersion)

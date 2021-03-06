@@ -4,6 +4,7 @@ import { GameVersion } from "../lib/game-version/game-version";
 import { Pokedex } from "../lib/pokedex/pokedex";
 import { Pokemon } from "../lib/pokemon/pokemon";
 import { AppState } from "./app.state";
+import { selectActivePokedexByGameVersionRouterParam } from "./pokedex.selector";
 import { selectRouteParams } from "./router.selectors";
 
 export const selectAllPokemon = createSelector(
@@ -12,11 +13,15 @@ export const selectAllPokemon = createSelector(
 );
 
 export const selectActivePokemonByRouterParam = createSelector(
+  selectActivePokedexByGameVersionRouterParam,
   selectRouteParams,
   selectAllPokemon,
-  (routeParams, allPokemon: Pokemon[]) => {
-    return allPokemon.filter(
-      (pokemon) => pokemon.id == routeParams.pokemonId
-    )[0];
+  (activePokedex: Pokedex, routeParams, allPokemon: Pokemon[]) => {
+    const pokemonId = activePokedex.pokemon.filter((pokemon) => {
+      return pokemon.entry == routeParams.versionPokemon;
+    })[0];
+
+    console.log(pokemonId, routeParams);
+    return allPokemon.filter((pokemon) => pokemon.id == pokemonId.id)[0];
   }
 );
