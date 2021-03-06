@@ -4,10 +4,10 @@
   </aside>
   <section>
     <ul class="nav nav-tabs">
-      <li *ngFor="let game of (gameVersions$ | async)?.results" class="nav-item">
+      <!-- <li *ngFor="let game of (gameVersions$ | async)?.results" class="nav-item">
         <a class="nav-link" [routerLink]="['pokedex','version', game.name]">{{ game.name }}</a>
         
-      </li>
+      </li> -->
     </ul>
     <article>
       <router-outlet></router-outlet>
