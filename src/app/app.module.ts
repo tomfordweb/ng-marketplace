@@ -13,6 +13,7 @@ import { DBConfig, NgxIndexedDBModule } from "ngx-indexed-db";
 import { GameVersionModule } from "./lib/game-version/game-version.module";
 import { pokedexReducer } from "./state/pokedex.reducer";
 import { pokemonReducer } from "./state/pokemon.reducer";
+import { routerReducer, StoreRouterConnectingModule } from "@ngrx/router-store";
 
 const dbConfig: DBConfig = {
   name: "MyDb",
@@ -60,9 +61,11 @@ const dbConfig: DBConfig = {
     HttpClientModule,
     GameVersionModule,
     AppRoutingModule,
+    StoreRouterConnectingModule.forRoot(),
     StoreModule.forRoot({
       gameVersions: gameVersionsReducer,
       pokedex: pokedexReducer,
+      router: routerReducer,
       pokemon: pokemonReducer,
     }),
     NgxIndexedDBModule.forRoot(dbConfig),

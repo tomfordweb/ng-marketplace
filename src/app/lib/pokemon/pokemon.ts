@@ -1,20 +1,23 @@
 export interface Pokemon {
-  base_happiness: number;
-  has_gender_differences: boolean;
-  hatch_counter: number;
+  name: string;
+  url: string;
   id: number;
-  is_baby: boolean;
-  is_legendary: boolean;
-  is_mythical: boolean;
-  names: {
+
+  base_happiness?: number;
+  has_gender_differences?: boolean;
+  hatch_counter?: number;
+  is_baby?: boolean;
+  is_legendary?: boolean;
+  is_mythical?: boolean;
+  names?: {
     name: string;
     language: {
       name: string;
       url: string;
     };
   }[];
-  order: number;
-  pal_park_encounters: {
+  order?: number;
+  pal_park_encounters?: {
     area: {
       name: string;
       url: string;
@@ -22,35 +25,35 @@ export interface Pokemon {
     base_score: number;
     rate: number;
   }[];
-  pokedex_numbers: {
+  pokedex_numbers?: {
     entry_number: number;
     pokedex: {
       name: string;
       url: string;
     };
   }[];
-  shape: {
+  shape?: {
     name: string;
     url: string;
   };
-  varieties: {
+  varieties?: {
     is_default: boolean;
     pokemon: {
       name: string;
       url: string;
     };
   }[];
-  form_descriptions: unknown[];
-  forms_switchable: boolean;
-  gender_rate: number;
-  capture_rate: 45;
-  color: { name: string; url: string };
-  egg_groups: { name: string; url: string }[];
-  evolution_chain: {
+  form_descriptions?: unknown[];
+  forms_switchable?: boolean;
+  gender_rate?: number;
+  capture_rate?: 45;
+  color?: { name: string; url: string };
+  egg_groups?: { name: string; url: string }[];
+  evolution_chain?: {
     url: string;
   };
-  evolves_from_species: unknown;
-  flavor_text_entries: {
+  evolves_from_species?: unknown;
+  flavor_text_entries?: {
     flavor_text: string;
     language: {
       name: string;
@@ -62,7 +65,7 @@ export interface Pokemon {
     };
   }[];
 
-  genera: {
+  genera?: {
     genus: string;
     language: {
       name: string;
@@ -70,19 +73,16 @@ export interface Pokemon {
     };
   }[];
 
-  generation: {
+  generation?: {
     name: string;
     url: string;
   };
-  growth_rate: {
+  growth_rate?: {
     name: string;
     url: string;
   };
-  habitat: {
+  habitat?: {
     name: string;
     url: string;
   };
-
-  name: string;
-  url: string;
 }

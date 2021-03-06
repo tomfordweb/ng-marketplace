@@ -22,6 +22,8 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // the game version is the root element of everything, while pokemon may be shared
+    // the version is unique
     this.gameVersionsService.getGames().subscribe((GameVersions) => {
       this.store.dispatch(retreiveGameVersionList({ GameVersions }));
     });

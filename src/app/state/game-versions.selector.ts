@@ -12,3 +12,9 @@ export const selectGameVersionByName = createSelector(
   (gameVersions: Array<GameVersion>, props: { name: string }) =>
     gameVersions.filter((game) => game.name === props.name)[0] || null
 );
+
+export const selectActiveGameVersion = createSelector(
+  (state: any) => state.gameVersions,
+  (gameVersions: GameVersion[]) =>
+    gameVersions.filter((game) => game.active === true)[0] || null
+);

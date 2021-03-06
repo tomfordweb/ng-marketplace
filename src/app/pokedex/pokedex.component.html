@@ -1,6 +1,13 @@
-<div *ngIf="currentPokedex$ | async as pokemon; else loading">
-  <ng-container *ngIf="pokemon.length; else noItems">
-    <div *ngFor="let p of pokemon"></div>
+<div *ngIf="currentPokedex$ | async as pokedex; else loading">
+  <ng-container *ngIf="!!pokedex; else noItems">
+    <h4>Displaying {{ pokedex.pokemon.length }} Pokemon</h4>
+    <ul class="list-unstyled list-inline">
+      <li class="list-inline-item" *ngFor="let pokedexEntry of pokedex.pokemon">
+        <a [routerLink]="['/', 'pokemon', pokedexEntry.id]">
+          {{ pokedexEntry.entry }}</a
+        >
+      </li>
+    </ul>
   </ng-container>
   <ng-template #noItems>No Pokemon!</ng-template>
 </div>

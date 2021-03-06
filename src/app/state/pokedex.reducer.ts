@@ -20,9 +20,13 @@ export const pokedexReducer = createReducer(
       id: PokedexApiResponse.id,
       is_main_series: PokedexApiResponse.is_main_series,
       name: PokedexApiResponse.name,
-      pokemon: PokedexApiResponse.pokemon_entries.map(
-        (entry) => entry.entry_number
-      ),
+      pokemon: PokedexApiResponse.pokemon_entries.map((entry) => {
+        const speciesParts = entry.pokemon_species.url.split("/");
+        return {
+          entry: entry.entry_number,
+          id: parseInt(speciesParts[speciesParts.length - 2]),
+        };
+      }),
     };
     return [...state, pokedex];
   })

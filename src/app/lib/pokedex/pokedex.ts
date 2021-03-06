@@ -10,5 +10,5 @@ export interface Pokedex {
   id: number;
   is_main_series: boolean;
   name: string;
-  pokemon: number[];
+  pokemon: { entry: number; id: number }[];
 }
