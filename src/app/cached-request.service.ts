@@ -10,7 +10,7 @@ export class CachedRequestService {
   getList$(config: IndexedDbConfig) {
     return this.db.getAll(config.key).pipe(
       tap((items) => {
-        console.log("items", items);
+        // console.log("items", items);
         if (items.length == 0) {
           throw new Error(`No Results for ${config.key}`);
         }
@@ -19,7 +19,15 @@ export class CachedRequestService {
   }
 
   getById$(config: IndexedDbConfig, id: number) {
-    return this.db.getByID(config.key, id);
+    return this.db.getByID(config.key, id).pipe(
+      tap((item) => {
+        // console.log("get gy id", item);
+        // factory the data into the appropriate stores
+        if (item === null || item === undefined) {
+          throw new Error(`no results for ${id}`);
+        }
+      })
+    );
   }
 
   updateEntity$(config: IndexedDbConfig, data: any) {

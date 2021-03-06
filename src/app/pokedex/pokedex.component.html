@@ -1,4 +1,4 @@
-<div *ngIf="pokemon$ | async as pokemon; else loading">
+<div *ngIf="currentPokedex$ | async as pokemon; else loading">
   <ng-container *ngIf="pokemon.length; else noItems">
     <div *ngFor="let p of pokemon"></div>
   </ng-container>

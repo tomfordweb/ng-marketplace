@@ -11,6 +11,8 @@ import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { environment } from "../environments/environment"; // Angular CLI environment
 import { DBConfig, NgxIndexedDBModule } from "ngx-indexed-db";
 import { GameVersionModule } from "./lib/game-version/game-version.module";
+import { pokedexReducer } from "./state/pokedex.reducer";
+import { pokemonReducer } from "./state/pokemon.reducer";
 
 const dbConfig: DBConfig = {
   name: "MyDb",
@@ -24,6 +26,29 @@ const dbConfig: DBConfig = {
         { name: "url", keypath: "url", options: { unique: true } },
       ],
     },
+    {
+      store: "pokedex",
+      storeConfig: { keyPath: "id", autoIncrement: true },
+      storeSchema: [
+        { name: "name", keypath: "name", options: { unique: true } },
+        {
+          name: "entry_number",
+          keypath: "entry_number",
+          options: { unique: true },
+        },
+        {
+          name: "is_main_series",
+          keypath: "is_main_series",
+          options: { unique: false },
+        },
+        { name: "pokemon", keypath: "pokemon", options: { unique: false } },
+        {
+          name: "descriptions",
+          keypath: "descriptions",
+          options: { unique: false },
+        },
+      ],
+    },
   ],
 };
 
@@ -35,7 +60,11 @@ const dbConfig: DBConfig = {
     HttpClientModule,
     GameVersionModule,
     AppRoutingModule,
-    StoreModule.forRoot({ gameVersions: gameVersionsReducer }),
+    StoreModule.forRoot({
+      gameVersions: gameVersionsReducer,
+      pokedex: pokedexReducer,
+      pokemon: pokemonReducer,
+    }),
     NgxIndexedDBModule.forRoot(dbConfig),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states

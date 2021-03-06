@@ -36,7 +36,10 @@ export class GameVersionService {
                   this.cachedRequestService.update$(this.config, gameVersions)
                 )
               );
-          })
+          }),
+          map((gameVersions: GameVersion[]) =>
+            gameVersions.map((game) => ({ ...game, active: false }))
+          )
         )
     );
   }
