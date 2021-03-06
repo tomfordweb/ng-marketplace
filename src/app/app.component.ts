@@ -3,7 +3,9 @@ import { Component, OnInit } from "@angular/core";
 import { select, Store } from "@ngrx/store";
 import { GameVersionService } from "./game-version/game-version.service";
 import { GameVersionsApiResponse } from "./game-version/gane-versions-api-response";
+import { AppState } from "./state/app.state";
 import { retreiveGameVersionList } from "./state/game-versions.actions";
+import { selectGameVersions } from "./state/game-versions.selector";
 
 @Component({
   selector: "app-root",
@@ -12,10 +14,11 @@ import { retreiveGameVersionList } from "./state/game-versions.actions";
 })
 export class AppComponent implements OnInit {
   title = "ng-marketplace";
+  gameVersions$ = this.store.pipe(select(selectGameVersions));
 
   constructor(
     private gameVersionsService: GameVersionService,
-    private store: Store
+    private store: Store<AppState>
   ) {}
 
   ngOnInit(): void {

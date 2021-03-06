@@ -1,4 +1,5 @@
 export interface GameVersion {
-  id: string;
+  id: number;
+  name: string;
   url: string;
 }

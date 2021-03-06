@@ -17,6 +17,6 @@ export class CachedRequestService {
     );
   }
   update$(config: IndexedDbConfig, data: any[]) {
-    this.db.update(config.key, data);
+    data.forEach((item) => this.db.update(config.key, item));
   }
 }

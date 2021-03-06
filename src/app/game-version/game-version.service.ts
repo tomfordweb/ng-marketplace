@@ -32,6 +32,7 @@ export class GameVersionService {
               )
               .pipe(
                 map((response) => response.results || []),
+                // store the data in indexeddb!
                 tap((gameVersions: GameVersion[]) =>
                   this.cachedRequestService.update$(this.config, gameVersions)
                 )
