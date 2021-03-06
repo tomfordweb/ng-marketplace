@@ -1,10 +1,10 @@
-<main>
+<main *ngIf="allPokemonGamesRequest$ | async">
   <aside>
     <h1>PWA Pokedex</h1>
   </aside>
   <section>
     <ul class="nav nav-tabs">
-      <li *ngFor="let game of gameVersions$ | async" class="nav-item">
+      <li *ngFor="let game of allPokemonGames$ | async" class="nav-item">
         <a class="nav-link" [routerLink]="['pokedex', 'version', game.name]">{{
           game.name
         }}</a>

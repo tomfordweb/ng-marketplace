@@ -14,44 +14,7 @@ import { GameVersionModule } from "./lib/game-version/game-version.module";
 import { pokedexReducer } from "./state/pokedex.reducer";
 import { pokemonReducer } from "./state/pokemon.reducer";
 import { routerReducer, StoreRouterConnectingModule } from "@ngrx/router-store";
-
-const dbConfig: DBConfig = {
-  name: "MyDb",
-  version: 1,
-  objectStoresMeta: [
-    {
-      store: "gameVersions",
-      storeConfig: { keyPath: "id", autoIncrement: true },
-      storeSchema: [
-        { name: "name", keypath: "name", options: { unique: true } },
-        { name: "url", keypath: "url", options: { unique: true } },
-      ],
-    },
-    {
-      store: "pokedex",
-      storeConfig: { keyPath: "id", autoIncrement: true },
-      storeSchema: [
-        { name: "name", keypath: "name", options: { unique: true } },
-        {
-          name: "entry_number",
-          keypath: "entry_number",
-          options: { unique: true },
-        },
-        {
-          name: "is_main_series",
-          keypath: "is_main_series",
-          options: { unique: false },
-        },
-        { name: "pokemon", keypath: "pokemon", options: { unique: false } },
-        {
-          name: "descriptions",
-          keypath: "descriptions",
-          options: { unique: false },
-        },
-      ],
-    },
-  ],
-};
+import { APP_INDEXED_DB_CONFIG } from "./lib/indexed-db/indexed-db.config";
 
 @NgModule({
   declarations: [AppComponent],
@@ -68,7 +31,7 @@ const dbConfig: DBConfig = {
       router: routerReducer,
       pokemon: pokemonReducer,
     }),
-    NgxIndexedDBModule.forRoot(dbConfig),
+    NgxIndexedDBModule.forRoot(APP_INDEXED_DB_CONFIG),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode

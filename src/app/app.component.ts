@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { select, Store } from "@ngrx/store";
+import { tap } from "rxjs/operators";
 import { GameVersionService } from "./lib/game-version/game-version.service";
 import { GameVersionsApiResponse } from "./lib/game-version/gane-versions-api-response";
 import { AppState } from "./state/app.state";
@@ -12,20 +13,20 @@ import { selectGameVersions } from "./state/game-versions.selector";
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = "ng-marketplace";
-  gameVersions$ = this.store.pipe(select(selectGameVersions));
+  allPokemonGames$ = this.store.pipe(select(selectGameVersions));
+
+  allPokemonGamesRequest$ = this.gameVersionsService
+    .getGames()
+    .pipe(
+      tap((GameVersions) =>
+        this.store.dispatch(retreiveGameVersionList({ GameVersions }))
+      )
+    );
 
   constructor(
     private gameVersionsService: GameVersionService,
     private store: Store<AppState>
   ) {}
-
-  ngOnInit(): void {
-    // the game version is the root element of everything, while pokemon may be shared
-    // the version is unique
-    this.gameVersionsService.getGames().subscribe((GameVersions) => {
-      this.store.dispatch(retreiveGameVersionList({ GameVersions }));
-    });
-  }
 }
