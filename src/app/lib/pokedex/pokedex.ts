@@ -9,7 +9,7 @@ export interface Pokedex {
   //   };
   // }[];
   id: number;
-  is_main_series: boolean;
+  is_main_series?: boolean;
   name: string;
   pokemon: { entry: number; id: number }[];
 }

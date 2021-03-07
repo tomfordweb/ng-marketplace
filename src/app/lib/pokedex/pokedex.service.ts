@@ -19,6 +19,7 @@ import { PokedexApiResponse } from "./pokedex-api-response";
 import { VERSION_GROUP_INDEXED_DB_CONFIG } from "../version-group/version-group.indexed-db";
 import { VersionGroupService } from "../version-group/version-group.service";
 import { extractIdFromEndOfUrl } from "../extract-id-from-url";
+import { VersionGroup } from "../version-group/version-group";
 
 @Injectable()
 export class PokedexService {
@@ -28,7 +29,11 @@ export class PokedexService {
     private cachedRequestService: CachedRequestService,
     private http: HttpClient
   ) {}
-  getPokedexById(id: number) {
+
+  protected getPokedexByIdAndAttachGameVersion$(
+    id: number,
+    gameVersion: GameVersion
+  ) {
     return (
       this.cachedRequestService
         // attempt to get from cache
@@ -41,6 +46,10 @@ export class PokedexService {
                 `https://pokeapi.co/api/v2/pokedex/${id}`
               )
               .pipe(
+                map((pokedexApi) => ({
+                  ...pokedexApi,
+                  gameVersion: gameVersion.id,
+                })),
                 // update indexeddb with the new data
                 tap((pokedex) =>
                   this.cachedRequestService.updateEntity$(this.config, pokedex)
@@ -50,46 +59,36 @@ export class PokedexService {
         )
     );
   }
-  getPokedexByGameVersion$(
+  getPokedexByGameVersionNew$(
     gameVersion: GameVersion
-  ): Observable<PokedexApiResponse[]> {
+  ): Observable<{ [name: string]: PokedexApiResponse }> {
     return this.versionGroupService
       .getVersionGroupByGameVersion$(gameVersion)
       .pipe(
-        pluck("pokedexes"),
-        map((pokedexes) =>
-          pokedexes.map((pokedex) => ({
-            id: extractIdFromEndOfUrl(pokedex.url),
-            url: pokedex.url,
-            data: null,
-            gameVersion: -1,
-          }))
+        map((versionGroup) =>
+          versionGroup.pokedexes.reduce(
+            (
+              map: { [name: string]: Observable<PokedexApiResponse> },
+              pokedexBasic
+            ) => {
+              map[pokedexBasic.name] = this.getPokedexByIdAndAttachGameVersion$(
+                extractIdFromEndOfUrl(pokedexBasic.url),
+                gameVersion
+              );
+
+              return map;
+            },
+            {}
+          )
         ),
-        mergeMap((urls) => {
-          // first map all the observales to make an array for API calls
-          let apiArray = urls.map((id) => {
-            return this.getPokedexById(id.id);
-          });
-          // now you have to make API calls
-          return forkJoin(...apiArray).pipe(
-            map((apiData) => {
-              // now modify your result to contain the data from API
-              // apiData will be an array conating results from API calls
-              // **note:** forkJoin will return the data in the same sequence teh requests were sent so doing a `forEach` works here
-              urls.forEach((eachOriginalValue, index) => {
-                apiData[index].gameVersion = gameVersion.id;
-                eachOriginalValue.data = apiData[index]; // use the key in which you get data from API
-              });
-              return urls;
-            }),
-            catchError((e) => {
-              console.log("error", e);
-              return of(e);
-            })
-          );
-        }),
-        map((data) => data.map((d: any) => d.data)),
-        tap((items) => console.log("final pokedex items", items))
+        switchMap((urls) => forkJoin(urls)),
+        tap((data) =>
+          console.log(
+            "Complete pokedex response for Game",
+            gameVersion.name,
+            data
+          )
+        )
       );
   }
 }

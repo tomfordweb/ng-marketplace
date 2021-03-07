@@ -24,5 +24,7 @@ export class PokemonDetailComponent implements OnInit {
   );
   constructor(private pokemonService: PokemonService, private store: Store) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log("pokemon detail init");
+  }
 }

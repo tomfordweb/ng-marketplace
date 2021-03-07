@@ -12,31 +12,29 @@
 
   <!-- Pokemon Index Numbers-->
   <ng-container *ngIf="baseObservables.currentGame; else selectAGame">
-    <ng-container *ngIf="pokedexRequest$ | async as pokedexRequest">
-      <div *ngIf="currentPokedex$ | async as pokedex; else loading">
-        <ng-container *ngIf="!!pokedex; else noItems">
-          <h4>Displaying {{ pokedex.pokemon.length }} Pokemon</h4>
-          <ul class="list-unstyled list-inline">
-            <li
-              class="list-inline-item"
-              *ngFor="let pokedexEntry of pokedex.pokemon"
+    <div *ngIf="currentPokedex$ | async as pokedex; else loading">
+      <ng-container *ngIf="!!pokedex; else noItems">
+        <h4>Displaying {{ pokedex.pokemon.length }} Pokemon</h4>
+        <ul class="list-unstyled list-inline">
+          <li
+            class="list-inline-item"
+            *ngFor="let pokedexEntry of pokedex.pokemon"
+          >
+            <a
+              [routerLink]="[
+                '/pokedex',
+                baseObservables.currentGame.name,
+                pokedexEntry.entry
+              ]"
             >
-              <a
-                [routerLink]="[
-                  '/pokedex',
-                  baseObservables.currentGame.name,
-                  pokedexEntry.entry
-                ]"
-              >
-                {{ pokedexEntry.entry }}</a
-              >
-            </li>
-          </ul>
-        </ng-container>
-        <ng-template #noItems>No Pokemon!</ng-template>
-      </div>
-      <ng-template #loading>loading animation...</ng-template>
-    </ng-container>
+              {{ pokedexEntry.entry }}</a
+            >
+          </li>
+        </ul>
+      </ng-container>
+      <ng-template #noItems>No Pokemon!</ng-template>
+    </div>
+    <ng-template #loading>loading animation...</ng-template>
 
     <!-- Pokemon Info -->
     <router-outlet></router-outlet>

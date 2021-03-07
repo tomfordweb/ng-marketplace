@@ -15,7 +15,10 @@ import {
   selectGameVersionByRouterParam,
   selectGameVersions,
 } from "../state/game-versions.selector";
-import { retreivedPokedexContents } from "../state/pokedex.actions";
+import {
+  retreivedAllPokedexesForGame,
+  retreivedPokedexContents,
+} from "../state/pokedex.actions";
 import { retrievedPokemonInformationFromPokedexResponse } from "../state/pokemon.actions";
 import { selectActivePokedexByGameVersionRouterParam } from "../state/pokedex.selector";
 
@@ -29,7 +32,35 @@ export class PokedexComponent implements OnInit {
 
   currentGame$ = this.store.pipe(select(selectGameVersionByRouterParam));
 
+  // take the current game version based on router params
+  // and then grab the pokedex relative the the :version router param
   currentPokedex$ = this.currentGame$.pipe(
+    switchMap((gameVersion: GameVersion) => {
+      // Now that we have our GameVersion, get the Pokedex
+      return this.pokedexService.getPokedexByGameVersionNew$(gameVersion).pipe(
+        tap((MultiplePokedexApiResponse) => {
+          this.store.dispatch(
+            retreivedAllPokedexesForGame({ MultiplePokedexApiResponse })
+          );
+
+          Object.values(MultiplePokedexApiResponse).forEach(
+            (PokedexApiResponse) => {
+              // Update pokedex stores with response information
+              // this.store.dispatch(
+              //   retreivedPokedexContents({ PokedexApiResponse })
+              // );
+              // We actually receive really basic pokemon information here as well
+              // update this so we can use it in components
+              this.store.dispatch(
+                retrievedPokemonInformationFromPokedexResponse({
+                  PokedexApiResponse,
+                })
+              );
+            }
+          );
+        })
+      );
+    }),
     switchMap((data) =>
       this.store.pipe(
         select(selectActivePokedexByGameVersionRouterParam),
@@ -37,31 +68,10 @@ export class PokedexComponent implements OnInit {
       )
     )
   );
-  // take the current game version based on router params
-  // and then grab the pokedex relative the the :version router param
-  pokedexRequest$ = this.currentGame$.pipe(
-    switchMap((gameVersion: GameVersion) => {
-      // Now that we have our GameVersion, get the Pokedex
-      return this.pokedexService.getPokedexByGameVersion$(gameVersion).pipe(
-        tap((responses: PokedexApiResponse[]) => {
-          responses.forEach((PokedexApiResponse) => {
-            // Update pokedex stores with response information
-            this.store.dispatch(
-              retreivedPokedexContents({ PokedexApiResponse })
-            );
-            // We actually receive really basic pokemon information here as well
-            // update this so we can use it in components
-            this.store.dispatch(
-              retrievedPokemonInformationFromPokedexResponse({
-                PokedexApiResponse,
-              })
-            );
-          });
-        })
-      );
-    })
-  );
 
+  // currentPokedex$ = this.pokedexRequest$.pipe(
+  //   tap((current) => console.log("current pokedex changed", current))
+  // );
   ngOnInit(): void {}
   constructor(
     private pokedexService: PokedexService,
