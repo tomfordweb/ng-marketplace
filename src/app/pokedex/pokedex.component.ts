@@ -1,8 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterEvent,
+} from "@angular/router";
 import { select, Store } from "@ngrx/store";
 import { of } from "rxjs";
-import { map, pluck, switchMap, take, tap } from "rxjs/operators";
+import { filter, map, pluck, switchMap, take, tap } from "rxjs/operators";
 import { GameVersion } from "../lib/game-version/game-version";
 import { PokedexApiResponse } from "../lib/pokedex/pokedex-api-response";
 import { PokedexService } from "../lib/pokedex/pokedex.service";
@@ -19,16 +24,19 @@ import { selectActivePokedexByGameVersionRouterParam } from "../state/pokedex.se
   templateUrl: "./pokedex.component.html",
   styleUrls: ["./pokedex.component.scss"],
 })
-export class PokedexComponent {
+export class PokedexComponent implements OnInit {
   allPokemonGames$ = this.store.pipe(select(selectGameVersions));
-
-  currentPokedex$ = this.store.pipe(
-    select(selectActivePokedexByGameVersionRouterParam),
-    tap((pokedex) => console.log(pokedex))
-  );
 
   currentGame$ = this.store.pipe(select(selectGameVersionByRouterParam));
 
+  currentPokedex$ = this.currentGame$.pipe(
+    switchMap((data) =>
+      this.store.pipe(
+        select(selectActivePokedexByGameVersionRouterParam),
+        tap((pokedex) => console.log("pd", pokedex))
+      )
+    )
+  );
   // take the current game version based on router params
   // and then grab the pokedex relative the the :version router param
   pokedexRequest$ = this.currentGame$.pipe(
@@ -37,7 +45,6 @@ export class PokedexComponent {
       return this.pokedexService.getPokedexByGameVersion$(gameVersion).pipe(
         tap((responses: PokedexApiResponse[]) => {
           responses.forEach((PokedexApiResponse) => {
-            console.log("Pokedex api response", PokedexApiResponse);
             // Update pokedex stores with response information
             this.store.dispatch(
               retreivedPokedexContents({ PokedexApiResponse })
@@ -55,5 +62,10 @@ export class PokedexComponent {
     })
   );
 
-  constructor(private pokedexService: PokedexService, private store: Store) {}
+  ngOnInit(): void {}
+  constructor(
+    private pokedexService: PokedexService,
+    private store: Store,
+    private activatedRoute: Router
+  ) {}
 }

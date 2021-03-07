@@ -17,11 +17,11 @@ export const createPokedexFromPokedexApiResponse = (
 export const pokedexReducer = createReducer(
   initialState,
   on(retreivedPokedexContents, (state, { PokedexApiResponse }) => {
-    console.log("pokedexapi", PokedexApiResponse);
     const pokedex: Pokedex = {
       id: PokedexApiResponse.id,
       is_main_series: PokedexApiResponse.is_main_series,
       name: PokedexApiResponse.name,
+      gameVersion: PokedexApiResponse.gameVersion,
       pokemon: PokedexApiResponse.pokemon_entries.map((entry) => {
         return {
           entry: entry.entry_number,

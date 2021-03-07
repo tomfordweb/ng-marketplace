@@ -9,7 +9,6 @@ export const initialState: ReadonlyArray<GameVersion> = [];
 export const gameVersionsReducer = createReducer(
   initialState,
   on(retreiveGameVersionList, (state, { GameVersions }) => {
-    console.log(GameVersions);
     GameVersions = GameVersions.map((game) => ({ ...game, active: false }));
     return [...GameVersions];
   })

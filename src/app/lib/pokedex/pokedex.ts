@@ -1,4 +1,5 @@
 export interface Pokedex {
+  gameVersion: number;
   // this data exists but isn't necessary yet..
   // descriptions: {
   //   description: string;

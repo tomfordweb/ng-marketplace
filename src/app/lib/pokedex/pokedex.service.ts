@@ -56,13 +56,13 @@ export class PokedexService {
     return this.versionGroupService
       .getVersionGroupByGameVersion$(gameVersion)
       .pipe(
-        tap((thing) => console.log("thing", thing)),
         pluck("pokedexes"),
         map((pokedexes) =>
           pokedexes.map((pokedex) => ({
             id: extractIdFromEndOfUrl(pokedex.url),
             url: pokedex.url,
             data: null,
+            gameVersion: -1,
           }))
         ),
         mergeMap((urls) => {
@@ -73,11 +73,11 @@ export class PokedexService {
           // now you have to make API calls
           return forkJoin(...apiArray).pipe(
             map((apiData) => {
-              console.log("apidata", apiData);
               // now modify your result to contain the data from API
               // apiData will be an array conating results from API calls
               // **note:** forkJoin will return the data in the same sequence teh requests were sent so doing a `forEach` works here
               urls.forEach((eachOriginalValue, index) => {
+                apiData[index].gameVersion = gameVersion.id;
                 eachOriginalValue.data = apiData[index]; // use the key in which you get data from API
               });
               return urls;
@@ -88,7 +88,8 @@ export class PokedexService {
             })
           );
         }),
-        map((data) => data.map((d: any) => d.data))
+        map((data) => data.map((d: any) => d.data)),
+        tap((items) => console.log("final pokedex items", items))
       );
   }
 }

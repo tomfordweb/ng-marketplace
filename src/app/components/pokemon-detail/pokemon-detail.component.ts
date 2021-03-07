@@ -19,7 +19,6 @@ export class PokemonDetailComponent implements OnInit {
       }
     }),
     switchMap((pokemon) => {
-      console.log("my pokemon", pokemon);
       return this.pokemonService.getPokemonById(pokemon.id);
     })
   );
