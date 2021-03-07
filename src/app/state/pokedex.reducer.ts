@@ -16,7 +16,7 @@ export const pokedexApiFactory = (PokedexApiResponse: PokedexApiResponse) => {
     id: PokedexApiResponse.id,
     is_main_series: PokedexApiResponse.is_main_series,
     name: PokedexApiResponse.name,
-    gameVersion: PokedexApiResponse.gameVersion,
+    gameVersion: [PokedexApiResponse.gameVersion],
     pokemon: PokedexApiResponse.pokemon_entries.map((entry) => {
       return {
         entry: entry.entry_number,
@@ -33,7 +33,29 @@ export const pokedexReducer = createReducer(
     const pokedexNew = Object.values(
       MultiplePokedexApiResponse
     ).map((pokedexApi) => pokedexApiFactory(pokedexApi));
-    return [...state, ...pokedexNew];
+
+    // sorry
+    const newState = state.map((pokedex) => {
+      const duplicateNewPokedex = pokedexNew.findIndex(
+        (pokedexState) => pokedexState.id === pokedex.id
+      );
+
+      if (duplicateNewPokedex !== -1) {
+        pokedex = {
+          ...pokedex,
+          gameVersion: [
+            ...pokedexNew[duplicateNewPokedex].gameVersion,
+            ...pokedex.gameVersion,
+          ],
+        };
+        pokedex.gameVersion = [...new Set(pokedex.gameVersion)];
+
+        pokedexNew.splice(duplicateNewPokedex, 1);
+      }
+
+      return pokedex;
+    });
+    return [...newState, ...pokedexNew];
   }),
   on(retreivedPokedexContents, (state, { PokedexApiResponse }) => {
     const pokedex = pokedexApiFactory(PokedexApiResponse);
