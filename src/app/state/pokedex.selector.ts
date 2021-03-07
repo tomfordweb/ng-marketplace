@@ -16,15 +16,6 @@ export const selectActivePokedexByGameVersionRouterParam = createSelector(
       allPokedexes.filter(
         (pokedex) => pokedex.gameVersion === currentGameVersion.id
       )[0] || null;
-
-    if (null === returnData) {
-      console.error({
-        gameVersion: currentGameVersion.id,
-        allPokedexes,
-        currentGameVersion,
-      });
-      // throw new Error("unable to select active pokedex!");
-    }
     return returnData;
   }
 );

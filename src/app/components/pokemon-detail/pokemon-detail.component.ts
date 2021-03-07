@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { select, Store } from "@ngrx/store";
-import { throwError } from "rxjs";
+import { of, throwError } from "rxjs";
 import { switchMap, tap } from "rxjs/operators";
 import { PokemonService } from "src/app/lib/pokemon/pokemon.service";
 import { selectActivePokemonByRouterParam } from "src/app/state/pokemon.selector";

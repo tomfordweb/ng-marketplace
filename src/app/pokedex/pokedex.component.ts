@@ -7,7 +7,15 @@ import {
 } from "@angular/router";
 import { select, Store } from "@ngrx/store";
 import { of } from "rxjs";
-import { filter, map, pluck, switchMap, take, tap } from "rxjs/operators";
+import {
+  filter,
+  map,
+  pluck,
+  switchMap,
+  take,
+  takeWhile,
+  tap,
+} from "rxjs/operators";
 import { GameVersion } from "../lib/game-version/game-version";
 import { PokedexApiResponse } from "../lib/pokedex/pokedex-api-response";
 import { PokedexService } from "../lib/pokedex/pokedex.service";
@@ -19,7 +27,7 @@ import {
   retreivedAllPokedexesForGame,
   retreivedPokedexContents,
 } from "../state/pokedex.actions";
-import { retrievedPokemonInformationFromPokedexResponse } from "../state/pokemon.actions";
+import { retrievedPokemonInformationFromMultiplePokedexResponse } from "../state/pokemon.actions";
 import { selectActivePokedexByGameVersionRouterParam } from "../state/pokedex.selector";
 
 @Component({
@@ -42,31 +50,22 @@ export class PokedexComponent implements OnInit {
           this.store.dispatch(
             retreivedAllPokedexesForGame({ MultiplePokedexApiResponse })
           );
-
-          Object.values(MultiplePokedexApiResponse).forEach(
-            (PokedexApiResponse) => {
-              // Update pokedex stores with response information
-              // this.store.dispatch(
-              //   retreivedPokedexContents({ PokedexApiResponse })
-              // );
-              // We actually receive really basic pokemon information here as well
-              // update this so we can use it in components
-              this.store.dispatch(
-                retrievedPokemonInformationFromPokedexResponse({
-                  PokedexApiResponse,
-                })
-              );
-            }
+          this.store.dispatch(
+            retrievedPokemonInformationFromMultiplePokedexResponse({
+              MultiplePokedexApiResponse,
+            })
           );
         })
       );
     }),
-    switchMap((data) =>
-      this.store.pipe(
+    switchMap((data) => {
+      console.log("ddd", data);
+      return this.store.pipe(
         select(selectActivePokedexByGameVersionRouterParam),
+        filter((pd) => pd !== null),
         tap((pokedex) => console.log("pd", pokedex))
-      )
-    )
+      );
+    })
   );
 
   // currentPokedex$ = this.pokedexRequest$.pipe(

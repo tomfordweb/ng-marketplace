@@ -15,7 +15,10 @@ import { INDEXED_DB_CONFIG } from "../../tokens";
 import { IndexedDbConfig } from "../../indexed-db-config";
 import { CachedRequestService } from "../../cached-request.service";
 import { GameVersion } from "../game-version/game-version";
-import { PokedexApiResponse } from "./pokedex-api-response";
+import {
+  MultiplePokedexApiResponse,
+  PokedexApiResponse,
+} from "./pokedex-api-response";
 import { VERSION_GROUP_INDEXED_DB_CONFIG } from "../version-group/version-group.indexed-db";
 import { VersionGroupService } from "../version-group/version-group.service";
 import { extractIdFromEndOfUrl } from "../extract-id-from-url";
@@ -46,25 +49,30 @@ export class PokedexService {
                 `https://pokeapi.co/api/v2/pokedex/${id}`
               )
               .pipe(
-                map((pokedexApi) => ({
-                  ...pokedexApi,
-                  gameVersion: gameVersion.id,
-                })),
+                tap((data) =>
+                  console.log("getting pokedex for version ", gameVersion)
+                ),
                 // update indexeddb with the new data
                 tap((pokedex) =>
                   this.cachedRequestService.updateEntity$(this.config, pokedex)
                 )
               );
-          })
+          }),
+          map((pokedexApi) => ({
+            ...pokedexApi,
+            gameVersion: gameVersion.id,
+          }))
         )
     );
   }
   getPokedexByGameVersionNew$(
     gameVersion: GameVersion
-  ): Observable<{ [name: string]: PokedexApiResponse }> {
+  ): Observable<MultiplePokedexApiResponse> {
     return this.versionGroupService
       .getVersionGroupByGameVersion$(gameVersion)
+
       .pipe(
+        tap((data) => console.log("version data ", data, gameVersion)),
         map((versionGroup) =>
           versionGroup.pokedexes.reduce(
             (

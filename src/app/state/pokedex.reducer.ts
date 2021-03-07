@@ -11,12 +11,6 @@ import {
 
 export const initialState: ReadonlyArray<Pokedex> = [];
 
-export const createPokedexFromPokedexApiResponse = (
-  response: PokedexApiResponse
-) => {
-  return;
-};
-
 export const pokedexApiFactory = (PokedexApiResponse: PokedexApiResponse) => {
   const pokedex: Pokedex = {
     id: PokedexApiResponse.id,
@@ -32,10 +26,10 @@ export const pokedexApiFactory = (PokedexApiResponse: PokedexApiResponse) => {
   };
   return pokedex;
 };
+
 export const pokedexReducer = createReducer(
   initialState,
   on(retreivedAllPokedexesForGame, (state, { MultiplePokedexApiResponse }) => {
-    console.log("reducing multiple pokedexes", MultiplePokedexApiResponse);
     const pokedexNew = Object.values(
       MultiplePokedexApiResponse
     ).map((pokedexApi) => pokedexApiFactory(pokedexApi));

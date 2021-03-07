@@ -20,3 +20,7 @@ export interface PokedexApiResponse {
     };
   }[];
 }
+
+export type MultiplePokedexApiResponse = {
+  [name: string]: PokedexApiResponse;
+};
