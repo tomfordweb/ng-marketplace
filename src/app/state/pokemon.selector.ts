@@ -13,15 +13,16 @@ export const selectAllPokemon = createSelector(
 );
 
 export const selectActivePokemonByRouterParam = createSelector(
-  selectActivePokedexByGameVersionRouterParam,
   selectRouteParams,
   selectAllPokemon,
-  (activePokedex: Pokedex, routeParams, allPokemon: Pokemon[]) => {
+  selectActivePokedexByGameVersionRouterParam,
+  (routeParams, allPokemon: Pokemon[], activePokedex: Pokedex) => {
+    console.log(activePokedex);
     const pokemonId = activePokedex.pokemon.filter((pokemon) => {
       return pokemon.entry == routeParams.versionPokemon;
     })[0];
 
-    console.log(pokemonId, routeParams);
+    console.log("mything", pokemonId, routeParams);
     return allPokemon.filter((pokemon) => pokemon.id == pokemonId.id)[0];
   }
 );

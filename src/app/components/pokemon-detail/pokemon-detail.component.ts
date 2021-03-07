@@ -13,6 +13,11 @@ import { selectActivePokemonByRouterParam } from "src/app/state/pokemon.selector
 export class PokemonDetailComponent implements OnInit {
   pokemon$ = this.store.pipe(
     select(selectActivePokemonByRouterParam),
+    tap((pokedex) => {
+      if (!pokedex) {
+        throwError("missing pokedex");
+      }
+    }),
     switchMap((pokemon) => {
       console.log("my pokemon", pokemon);
       return this.pokemonService.getPokemonById(pokemon.id);

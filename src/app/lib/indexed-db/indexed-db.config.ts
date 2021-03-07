@@ -150,6 +150,35 @@ export const APP_INDEXED_DB_CONFIG: DBConfig = {
       ],
     },
     {
+      store: "versionGroup",
+      storeConfig: { keyPath: "id", autoIncrement: true },
+      storeSchema: [
+        {
+          name: "generation",
+          keypath: "generation",
+          options: { unique: false },
+        },
+        {
+          name: "entry_number",
+          keypath: "entry_number",
+          options: { unique: true },
+        },
+        {
+          name: "move_learn_methods",
+          keypath: "move_learn_methods",
+          options: { unique: false },
+        },
+        { name: "name", keypath: "name", options: { unique: false } },
+        { name: "pokedexes", keypath: "pokedexes", options: { unique: false } },
+        { name: "versions", keypath: "versions", options: { unique: false } },
+        {
+          name: "order",
+          keypath: "order",
+          options: { unique: false },
+        },
+      ],
+    },
+    {
       store: "pokedex",
       storeConfig: { keyPath: "id", autoIncrement: true },
       storeSchema: [

@@ -1,4 +1,5 @@
 import { createReducer, on, Action } from "@ngrx/store";
+import { extractIdFromEndOfUrl } from "../lib/extract-id-from-url";
 import { GameVersion } from "../lib/game-version/game-version";
 import { Pokemon } from "../lib/pokemon/pokemon";
 import { AppState } from "./app.state";
@@ -15,10 +16,9 @@ export const pokemonReducer = createReducer(
     (state, { PokedexApiResponse }) => {
       const pokemonBasic: Pokemon[] = PokedexApiResponse.pokemon_entries
         .map((pokemon) => {
-          const speciesParts = pokemon.pokemon_species.url.split("/");
           return {
             name: pokemon.pokemon_species.name,
-            id: parseInt(speciesParts[speciesParts.length - 2]),
+            id: extractIdFromEndOfUrl(pokemon.pokemon_species.url),
             url: pokemon.pokemon_species.url,
           };
         })
@@ -36,7 +36,6 @@ export const pokemonReducer = createReducer(
 
           return pokemonBasic;
         });
-
       return [...pokemonBasic];
     }
   )

@@ -1,33 +1,45 @@
 <!-- Pokemon Game Strip-->
-<ng-container *ngIf="allPokemonGames$ | async as pokemonGames">
-  <app-pokemon-game-list [games]="pokemonGames"></app-pokemon-game-list>
-</ng-container>
+<ng-container
+  *ngIf="{
+    allGames: allPokemonGames$ | async,
+    currentGame: currentGame$ | async
+  } as baseObservables"
+>
+  <app-pokemon-game-list
+    *ngIf="!!baseObservables.allGames"
+    [games]="baseObservables.allGames"
+  ></app-pokemon-game-list>
 
-<!-- Pokemon Index Numbers-->
-<ng-container *ngIf="currentGame$ | async as currentGame; else selectAGame">
-  <ng-container *ngIf="pokedexRequest$ | async">
-    <div *ngIf="currentPokedex$ | async as pokedex; else loading">
-      <ng-container *ngIf="!!pokedex; else noItems">
-        <h4>Displaying {{ pokedex.pokemon.length }} Pokemon</h4>
-        <ul class="list-unstyled list-inline">
-          <li
-            class="list-inline-item"
-            *ngFor="let pokedexEntry of pokedex.pokemon"
-          >
-            <a
-              [routerLink]="['/pokedex', currentGame.name, pokedexEntry.entry]"
+  <!-- Pokemon Index Numbers-->
+  <ng-container *ngIf="baseObservables.currentGame; else selectAGame">
+    <ng-container *ngIf="pokedexRequest$ | async as pokedexRequest">
+      <div *ngIf="currentPokedex$ | async as pokedex; else loading">
+        <ng-container *ngIf="!!pokedex; else noItems">
+          <h4>Displaying {{ pokedex.pokemon.length }} Pokemon</h4>
+          <ul class="list-unstyled list-inline">
+            <li
+              class="list-inline-item"
+              *ngFor="let pokedexEntry of pokedex.pokemon"
             >
-              {{ pokedexEntry.entry }}</a
-            >
-          </li>
-        </ul>
-      </ng-container>
-      <ng-template #noItems>No Pokemon!</ng-template>
-    </div>
-    <ng-template #loading>loading animation...</ng-template>
+              <a
+                [routerLink]="[
+                  '/pokedex',
+                  baseObservables.currentGame.name,
+                  pokedexEntry.entry
+                ]"
+              >
+                {{ pokedexEntry.entry }}</a
+              >
+            </li>
+          </ul>
+        </ng-container>
+        <ng-template #noItems>No Pokemon!</ng-template>
+      </div>
+      <ng-template #loading>loading animation...</ng-template>
+    </ng-container>
+
+    <!-- Pokemon Info -->
+    <router-outlet></router-outlet>
   </ng-container>
+  <ng-template #selectAGame>Select a game</ng-template>
 </ng-container>
-<ng-template #selectAGame>Select a game</ng-template>
-
-<!-- Pokemon Info -->
-<router-outlet></router-outlet>
