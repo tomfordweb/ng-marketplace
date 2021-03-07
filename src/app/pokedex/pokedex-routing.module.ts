@@ -10,7 +10,7 @@ const routes: Routes = [
     component: PokedexComponent,
     children: [
       { path: ":version", component: SelectAPokemonComponent },
-      { path: ":version/:versionPokemon", component: PokemonDetailComponent },
+      // { path: ":version/:versionPokemon", component: PokemonDetailComponent },
     ],
   },
 ];

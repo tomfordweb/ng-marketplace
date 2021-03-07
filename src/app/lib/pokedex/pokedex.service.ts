@@ -49,9 +49,6 @@ export class PokedexService {
                 `https://pokeapi.co/api/v2/pokedex/${id}`
               )
               .pipe(
-                tap((data) =>
-                  console.log("getting pokedex for version ", gameVersion)
-                ),
                 // update indexeddb with the new data
                 tap((pokedex) =>
                   this.cachedRequestService.updateEntity$(this.config, pokedex)
@@ -65,14 +62,13 @@ export class PokedexService {
         )
     );
   }
-  getPokedexByGameVersionNew$(
+  getPokedexByGameVersion$(
     gameVersion: GameVersion
   ): Observable<MultiplePokedexApiResponse> {
     return this.versionGroupService
       .getVersionGroupByGameVersion$(gameVersion)
 
       .pipe(
-        tap((data) => console.log("version data ", data, gameVersion)),
         map((versionGroup) =>
           versionGroup.pokedexes.reduce(
             (
@@ -89,14 +85,14 @@ export class PokedexService {
             {}
           )
         ),
-        switchMap((urls) => forkJoin(urls)),
-        tap((data) =>
-          console.log(
-            "Complete pokedex response for Game",
-            gameVersion.name,
-            data
-          )
-        )
+        switchMap((urls) => forkJoin(urls))
+        // tap((data) =>
+        //   console.log(
+        //     "Complete pokedex response for Game",
+        //     gameVersion.name,
+        //     data
+        //   )
+        // )
       );
   }
 }

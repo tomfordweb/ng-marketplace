@@ -12,8 +12,8 @@
 
   <!-- Pokemon Index Numbers-->
   <ng-container *ngIf="baseObservables.currentGame; else selectAGame">
-    <div *ngIf="currentPokedex$ | async as pokedex; else loading">
-      <ng-container *ngIf="!!pokedex; else noItems">
+    <div *ngIf="currentPokedexes$ | async as pokedexes; else loading">
+      <ng-container *ngFor="let pokedex of pokedexes">
         <h4>Displaying {{ pokedex.pokemon.length }} Pokemon</h4>
         <ul class="list-unstyled list-inline">
           <li
