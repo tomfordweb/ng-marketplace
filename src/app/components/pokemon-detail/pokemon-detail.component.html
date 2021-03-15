@@ -1,5 +1,5 @@
-<ng-container *ngIf="pokemonRequest$ | async as pokemonRequest">
-  <ng-container *ngIf="pokemon$ | async as pokemon">
+<ng-container *ngIf="pokemonRequest$ | async; else loading">
+  <ng-container *ngIf="pokemon$ | async as pokemon; else loading">
     <h1>
       <small>#{{ pokemon.id }}</small
       >&nbsp;{{ pokemon.name }}
@@ -7,6 +7,10 @@
     <dl>
       <dt>Base Happiness</dt>
       <dd>{{ pokemon.base_happiness }}</dd>
+
+      <dt>Capture Rate</dt>
+      <dd>{{ pokemon.capture_rate }}</dd>
     </dl>
   </ng-container>
 </ng-container>
+<ng-template #loading> Loading... </ng-template>
