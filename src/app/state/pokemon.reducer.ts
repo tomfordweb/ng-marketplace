@@ -7,8 +7,8 @@ import { AppState } from "./app.state";
 
 import { retreiveGameVersionList } from "./game-versions.actions";
 import {
+  retreivedPokemon,
   retrievedPokemonInformationFromMultiplePokedexResponse,
-  retrievedPokemonInformationFromPokedexResponse,
 } from "./pokemon.actions";
 
 export const initialState: ReadonlyArray<Pokemon> = [];
@@ -30,6 +30,27 @@ export const factoryBasicPokemonInformationFromPokedexApiResponse = (
 
 export const pokemonReducer = createReducer(
   initialState,
+  on(retreivedPokemon, (state, { PokemonApi }) => {
+    console.log(state);
+    const existingPokemon = state.findIndex(
+      (pokemon) => pokemon.id === PokemonApi.id
+    );
+    if (existingPokemon === -1) {
+      return [...state, ...[PokemonApi]];
+    }
+    const newPokemon = {
+      ...state[existingPokemon],
+      ...PokemonApi,
+    };
+    state = state.map((existingState) => {
+      if (existingState.id === newPokemon.id) {
+        return newPokemon;
+      }
+      return existingState;
+    });
+
+    return [...state];
+  }),
   on(
     retrievedPokemonInformationFromMultiplePokedexResponse,
     (state, { MultiplePokedexApiResponse }) => {
@@ -42,27 +63,4 @@ export const pokemonReducer = createReducer(
       return [...state, ...manyPokedexes];
     }
   )
-  // on(
-  //   retrievedPokemonInformationFromPokedexResponse,
-  //   (state, { PokedexApiResponse }) => {
-  //     const pokemonBasic = factoryBasicPokemonInformationFromPokedexApiResponse(
-  //       PokedexApiResponse
-  //     );
-  //     // .map((pokemonBasic) => {
-  //     //   const existingIndex = state.findIndex(
-  //     //     (pokemonState) => pokemonState.id === pokemonBasic.id
-  //     //   );
-  //     //   if (existingIndex !== -1) {
-  //     //     const pokemonState = state[existingIndex];
-  //     //     pokemonBasic = {
-  //     //       ...pokemonState,
-  //     //       ...pokemonBasic,
-  //     //     };
-  //     //   }
-
-  //     //   return pokemonBasic;
-  //     // });
-  //     return [...state, ...pokemonBasic];
-  //   }
-  // )
 );

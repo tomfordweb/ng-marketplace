@@ -65,7 +65,6 @@ export class PokedexComponent implements OnInit {
       );
     })
   );
-
   // currentPokedex$ = this.pokedexRequest$.pipe(
   //   tap((current) => console.log("current pokedex changed", current))
   // );

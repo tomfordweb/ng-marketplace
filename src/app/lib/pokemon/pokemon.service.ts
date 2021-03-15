@@ -7,7 +7,6 @@ import { INDEXED_DB_CONFIG } from "../../tokens";
 import { IndexedDbConfig } from "../../indexed-db-config";
 import { CachedRequestService } from "../../cached-request.service";
 import { Pokemon } from "./pokemon";
-
 @Injectable()
 export class PokemonService {
   constructor(

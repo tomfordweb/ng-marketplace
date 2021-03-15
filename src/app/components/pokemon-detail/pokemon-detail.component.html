@@ -1,6 +1,12 @@
-<ng-container *ngIf="pokemon$ | async as pokemon">
-  <h1>
-    <small>#{{ pokemon.id }}</small
-    >&nbsp;{{ pokemon.name }}
-  </h1>
+<ng-container *ngIf="pokemonRequest$ | async as pokemonRequest">
+  <ng-container *ngIf="pokemon$ | async as pokemon">
+    <h1>
+      <small>#{{ pokemon.id }}</small
+      >&nbsp;{{ pokemon.name }}
+    </h1>
+    <dl>
+      <dt>Base Happiness</dt>
+      <dd>{{ pokemon.base_happiness }}</dd>
+    </dl>
+  </ng-container>
 </ng-container>
