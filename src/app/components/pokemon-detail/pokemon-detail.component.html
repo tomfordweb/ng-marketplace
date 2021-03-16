@@ -1,16 +1,44 @@
 <ng-container *ngIf="pokemonRequest$ | async; else loading">
   <ng-container *ngIf="pokemon$ | async as pokemon; else loading">
-    <h1>
-      <small>#{{ pokemon.id }}</small
-      >&nbsp;{{ pokemon.name }}
-    </h1>
-    <dl>
-      <dt>Base Happiness</dt>
-      <dd>{{ pokemon.base_happiness }}</dd>
+    <header>
+      <h1>
+        <small>#{{ pokemon.id }}</small
+        >&nbsp;{{ pokemon.name }}
+      </h1>
+    </header>
+    <section class="row">
+      <article class="col-sm-12 col-md-6">
+        <img src="https://via.placeholder.com/300" />
+      </article>
+      <article class="col-sm-12 col-md-6">
+        <dl>
+          <dt>Base Happiness</dt>
+          <dd>{{ pokemon.base_happiness }}</dd>
 
-      <dt>Capture Rate</dt>
-      <dd>{{ pokemon.capture_rate }}</dd>
-    </dl>
+          <dt>Capture Rate</dt>
+          <dd>{{ pokemon.capture_rate }}</dd>
+        </dl>
+
+        <ul>
+          <li>
+            <app-checkmark-item [checked]="pokemon.is_baby"
+              >Baby</app-checkmark-item
+            >
+          </li>
+          <li>
+            <app-checkmark-item [checked]="pokemon.is_legendary"
+              >Legendary</app-checkmark-item
+            >
+          </li>
+          <li>
+            <app-checkmark-item [checked]="pokemon.is_mythical"
+              >Mythical</app-checkmark-item
+            >
+          </li>
+        </ul>
+      </article>
+      <p><app-checkmark-item></app-checkmark-item></p>
+    </section>
   </ng-container>
 </ng-container>
 <ng-template #loading> Loading... </ng-template>

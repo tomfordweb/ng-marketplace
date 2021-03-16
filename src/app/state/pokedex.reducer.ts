@@ -20,6 +20,7 @@ export const pokedexApiFactory = (PokedexApiResponse: PokedexApiResponse) => {
     pokemon: PokedexApiResponse.pokemon_entries.map((entry) => {
       return {
         entry: entry.entry_number,
+        name: entry.pokemon_species.name,
         id: extractIdFromEndOfUrl(entry.pokemon_species.url),
       };
     }),

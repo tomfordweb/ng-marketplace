@@ -9,6 +9,7 @@ import { PokemonDetailComponentModule } from "../components/pokemon-detail/pokem
 import { RouterModule } from "@angular/router";
 import { SelectAPokemonComponent } from "./select-a-pokemon/select-a-pokemon.component";
 import { PokemonLibModule } from "../lib/pokemon/pokemon.module";
+import { PokemonGameSelectorComponentModule } from "../components/pokemon-game-selector/pokemon-game-selector.module";
 
 @NgModule({
   declarations: [PokedexComponent, SelectAPokemonComponent],
@@ -19,6 +20,7 @@ import { PokemonLibModule } from "../lib/pokemon/pokemon.module";
     PokedexLibModule,
     PokemonLibModule,
     PokemonDetailComponentModule,
+    PokemonGameSelectorComponentModule,
     PokemonGameListComponentModule,
   ],
 })
