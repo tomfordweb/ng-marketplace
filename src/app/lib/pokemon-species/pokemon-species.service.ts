@@ -6,16 +6,16 @@ import { catchError, map, tap } from "rxjs/operators";
 import { INDEXED_DB_CONFIG } from "../../tokens";
 import { IndexedDbConfig } from "../../indexed-db-config";
 import { CachedRequestService } from "../../cached-request.service";
-import { Pokemon } from "./pokemon";
+import { PokemonSpecies } from "./pokemon-species";
 @Injectable()
-export class PokemonService {
+export class PokemonSpeciesService {
   constructor(
     @Inject(INDEXED_DB_CONFIG) private config: IndexedDbConfig,
     private cachedRequestService: CachedRequestService,
     private http: HttpClient
   ) {}
 
-  getPokemonById(pokemonId: number): Observable<Pokemon> {
+  getByPokemonId$(pokemonId: number): Observable<PokemonSpecies> {
     return (
       this.cachedRequestService
         // attempt to get from cache
@@ -24,12 +24,12 @@ export class PokemonService {
           catchError((error) => {
             // If we failed to retreive it from the cache, return the api request
             return this.http
-              .get<Pokemon>(
+              .get<PokemonSpecies>(
                 `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`
               )
               .pipe(
                 // store the data in indexeddb!
-                tap((pokemonResponse: Pokemon) =>
+                tap((pokemonResponse: PokemonSpecies) =>
                   this.cachedRequestService.updateEntity$(
                     this.config,
                     pokemonResponse

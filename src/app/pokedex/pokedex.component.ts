@@ -40,31 +40,6 @@ export class PokedexComponent implements OnInit {
 
   currentGame$ = this.store.pipe(select(selectGameVersionByRouterParam));
 
-  // take the current game version based on router params
-  // and then grab the pokedex relative the the :version router param
-  currentPokedexes$ = this.currentGame$.pipe(
-    switchMap((gameVersion: GameVersion) => {
-      // Now that we have our GameVersion, get the Pokedex
-      return this.pokedexService.getPokedexByGameVersion$(gameVersion).pipe(
-        tap((MultiplePokedexApiResponse) => {
-          this.store.dispatch(
-            retreivedAllPokedexesForGame({ MultiplePokedexApiResponse })
-          );
-          this.store.dispatch(
-            retrievedPokemonInformationFromMultiplePokedexResponse({
-              MultiplePokedexApiResponse,
-            })
-          );
-        })
-      );
-    }),
-    switchMap((data) => {
-      return this.store.pipe(
-        select(selectActivePokedexByGameVersionRouterParam),
-        filter((pd) => pd !== null)
-      );
-    })
-  );
   // currentPokedex$ = this.pokedexRequest$.pipe(
   //   tap((current) => console.log("current pokedex changed", current))
   // );

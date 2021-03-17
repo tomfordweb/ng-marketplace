@@ -12,29 +12,6 @@
       [value]="baseObservables.currentGame.name"
       [games]="baseObservables.allGames"
     ></app-pokemon-game-select>
-    <div *ngIf="currentPokedexes$ | async as pokedexes; else loading">
-      <ng-container *ngFor="let pokedex of pokedexes">
-        <h4>Displaying {{ pokedex.pokemon.length }} Pokemon</h4>
-        <ul class="list-unstyled list-inline">
-          <li
-            class="list-inline-item"
-            *ngFor="let pokedexEntry of pokedex.pokemon"
-          >
-            <a
-              [routerLink]="[
-                '/pokedex',
-                baseObservables.currentGame.name,
-                pokedexEntry.id
-              ]"
-            >
-              {{ pokedexEntry.entry }}<br />
-              {{ pokedexEntry.name }}</a
-            >
-          </li>
-        </ul>
-      </ng-container>
-    </div>
-
     <!-- Pokemon Info -->
     <router-outlet></router-outlet>
   </ng-container>

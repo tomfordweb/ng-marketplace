@@ -1,9 +1,9 @@
 import { HttpParams } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { select, Store } from "@ngrx/store";
-import { of, throwError } from "rxjs";
+import { EMPTY, of, throwError } from "rxjs";
 import { filter, switchMap, tap } from "rxjs/operators";
-import { PokemonService } from "src/app/lib/pokemon/pokemon.service";
+import { PokemonSpeciesService } from "src/app/lib/pokemon-species/pokemon-species.service";
 import { retreivedPokemon } from "src/app/state/pokemon.actions";
 import { selectActivePokemonByRouterParam } from "src/app/state/pokemon.selector";
 import { selectRouteParams } from "src/app/state/router.selectors";
@@ -22,12 +22,20 @@ export class PokemonDetailComponent implements OnInit {
 
   pokemonRequest$ = this.store.pipe(
     select(selectRouteParams),
-    switchMap((params) =>
-      this.pokemonService.getPokemonById(params.versionPokemon)
-    ),
+    switchMap((params) => {
+      if (!!params.versionPokemon) {
+        return this.pokemonSpeciesService.getByPokemonId$(
+          parseInt(params.versionPokemon)
+        );
+      }
+      return EMPTY;
+    }),
     tap((PokemonApi) => this.store.dispatch(retreivedPokemon({ PokemonApi })))
   );
-  constructor(private pokemonService: PokemonService, private store: Store) {}
+  constructor(
+    private pokemonSpeciesService: PokemonSpeciesService,
+    private store: Store
+  ) {}
 
   ngOnInit(): void {}
 }

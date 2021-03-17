@@ -13,7 +13,7 @@ export const APP_INDEXED_DB_CONFIG: DBConfig = {
       ],
     },
     {
-      store: "pokemon",
+      store: "pokemonSpecies",
       storeConfig: { keyPath: "id", autoIncrement: true },
       storeSchema: [
         { name: "name", keypath: "name", options: { unique: true } },

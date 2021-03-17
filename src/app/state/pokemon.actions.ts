@@ -4,11 +4,11 @@ import {
   MultiplePokedexApiResponse,
   PokedexApiResponse,
 } from "../lib/pokedex/pokedex-api-response";
-import { Pokemon } from "../lib/pokemon/pokemon";
+import { PokemonSpecies } from "../lib/pokemon-species/pokemon-species";
 
 export const retreivedPokemon = createAction(
   "[Pokemon] Retreive pokemon",
-  props<{ PokemonApi: Pokemon }>()
+  props<{ PokemonApi: PokemonSpecies }>()
 );
 
 export const retrievedPokemonInformationFromMultiplePokedexResponse = createAction(

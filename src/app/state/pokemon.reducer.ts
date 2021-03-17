@@ -2,7 +2,7 @@ import { createReducer, on, Action } from "@ngrx/store";
 import { extractIdFromEndOfUrl } from "../lib/extract-id-from-url";
 import { GameVersion } from "../lib/game-version/game-version";
 import { PokedexApiResponse } from "../lib/pokedex/pokedex-api-response";
-import { Pokemon } from "../lib/pokemon/pokemon";
+import { PokemonSpecies } from "../lib/pokemon-species/pokemon-species";
 import { AppState } from "./app.state";
 
 import { retreiveGameVersionList } from "./game-versions.actions";
@@ -11,12 +11,12 @@ import {
   retrievedPokemonInformationFromMultiplePokedexResponse,
 } from "./pokemon.actions";
 
-export const initialState: ReadonlyArray<Pokemon> = [];
+export const initialState: ReadonlyArray<PokemonSpecies> = [];
 
 export const factoryBasicPokemonInformationFromPokedexApiResponse = (
   PokedexApiResponse: PokedexApiResponse
 ) => {
-  const pokemonBasic: Pokemon[] = PokedexApiResponse.pokemon_entries.map(
+  const pokemonBasic: PokemonSpecies[] = PokedexApiResponse.pokemon_entries.map(
     (pokemon) => {
       return {
         name: pokemon.pokemon_species.name,

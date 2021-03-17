@@ -18,8 +18,9 @@ export class CachedRequestService {
   }
 
   getById$(config: IndexedDbConfig, id: number) {
-    return this.db.getByID(config.key, id).pipe(
+    return this.db.getByKey(config.key, id).pipe(
       tap((item) => {
+        console.log("crom cache", id, item);
         // factory the data into the appropriate stores
         if (item === null || item === undefined) {
           throw new Error(`no results for ${id}`);
@@ -29,6 +30,7 @@ export class CachedRequestService {
   }
 
   updateEntity$(config: IndexedDbConfig, data: any) {
+    console.log("saving in cache", config, data);
     this.db.update(config.key, data);
   }
   update$(config: IndexedDbConfig, data: any[]) {
