@@ -1,0 +1,10 @@
+#select-a-pokemon {
+  display: flex;
+  flex-wrap: wrap;
+  .title {
+    text-align: center;
+    width: 100%;
+  }
+  app-pokemon-card {
+  }
+}

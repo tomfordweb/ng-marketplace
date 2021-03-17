@@ -15,27 +15,18 @@ import { retreivedBasicSpeciesListFromPokedex } from "src/app/state/pokemon-spec
       pokedexes: currentPokedexes$ | async,
       currentGame: currentGame$ | async
     } as baseObservables"
+    id="select-a-pokemon"
   >
     <ng-container *ngFor="let pokedex of baseObservables.pokedexes">
-      <h4>Displaying {{ pokedex.pokemon.length }} Pokemon</h4>
-      <ul class="list-unstyled list-inline">
-        <li
-          class="list-inline-item"
-          *ngFor="let pokedexEntry of pokedex.pokemon"
-        >
-          <a
-            *ngIf="baseObservables.currentGame"
-            [routerLink]="[
-              '/pokedex',
-              baseObservables.currentGame.name,
-              pokedexEntry.id
-            ]"
-          >
-            {{ pokedexEntry.entry }}<br />
-            {{ pokedexEntry.name }}</a
-          >
-        </li>
-      </ul>
+      <h4 class="title">Displaying {{ pokedex.pokemon.length }} Pokemon</h4>
+
+      <app-pokemon-card
+        *ngFor="let pokemon of pokedex.pokemon"
+        [pokemon]="pokemon"
+      >
+        {{ pokemon.entry }}<br />
+        {{ pokemon.name }}
+      </app-pokemon-card>
     </ng-container>
   </div>`,
   styleUrls: ["./select-a-pokemon.component.scss"],

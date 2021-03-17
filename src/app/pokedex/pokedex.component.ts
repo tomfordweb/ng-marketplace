@@ -40,9 +40,6 @@ export class PokedexComponent implements OnInit {
 
   currentGame$ = this.store.pipe(select(selectGameVersionByRouterParam));
 
-  // currentPokedex$ = this.pokedexRequest$.pipe(
-  //   tap((current) => console.log("current pokedex changed", current))
-  // );
   ngOnInit(): void {}
   constructor(
     private pokedexService: PokedexService,
