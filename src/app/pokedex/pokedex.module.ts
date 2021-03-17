@@ -7,8 +7,9 @@ import { PokedexLibModule } from "../lib/pokedex/pokedex.module";
 import { PokemonGameListComponentModule } from "../components/pokemon-game-list/pokemon-game-list.module";
 import { PokemonDetailComponentModule } from "../components/pokemon-detail/pokemon-detail.module";
 import { RouterModule } from "@angular/router";
-import { SelectAPokemonComponent } from "./select-a-pokemon/select-a-pokemon.component";
-import { PokemonLibModule } from "../lib/pokemon/pokemon.module";
+import { SelectAPokemonComponent } from "../components/select-a-pokemon/select-a-pokemon.component";
+import { PokemonSpeciesLibModule } from "../lib/pokemon-species/pokemon-species.module";
+import { PokemonGameSelectorComponentModule } from "../components/pokemon-game-selector/pokemon-game-selector.module";
 
 @NgModule({
   declarations: [PokedexComponent, SelectAPokemonComponent],
@@ -17,8 +18,9 @@ import { PokemonLibModule } from "../lib/pokemon/pokemon.module";
     CommonModule,
     PokedexRoutingModule,
     PokedexLibModule,
-    PokemonLibModule,
+    PokemonSpeciesLibModule,
     PokemonDetailComponentModule,
+    PokemonGameSelectorComponentModule,
     PokemonGameListComponentModule,
   ],
 })

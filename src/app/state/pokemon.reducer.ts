@@ -1,43 +1,42 @@
 import { createReducer, on, Action } from "@ngrx/store";
+import { extractIdFromEndOfUrl } from "../lib/extract-id-from-url";
 import { GameVersion } from "../lib/game-version/game-version";
+import { PokedexApiResponse } from "../lib/pokedex/pokedex-api-response";
+import { PokemonSpecies } from "../lib/pokemon-species/pokemon-species";
 import { Pokemon } from "../lib/pokemon/pokemon";
 import { AppState } from "./app.state";
 
 import { retreiveGameVersionList } from "./game-versions.actions";
-import { retrievedPokemonInformationFromPokedexResponse } from "./pokemon.actions";
+import {
+  retreivedPokemonSpeciesData,
+  retreivedBasicSpeciesListFromPokedex,
+} from "./pokemon-species.actions";
+import { retreivedPokemonData } from "./pokemon.actions";
 
 export const initialState: ReadonlyArray<Pokemon> = [];
 
 export const pokemonReducer = createReducer(
   initialState,
-  on(
-    retrievedPokemonInformationFromPokedexResponse,
-    (state, { PokedexApiResponse }) => {
-      const pokemonBasic: Pokemon[] = PokedexApiResponse.pokemon_entries
-        .map((pokemon) => {
-          const speciesParts = pokemon.pokemon_species.url.split("/");
-          return {
-            name: pokemon.pokemon_species.name,
-            id: parseInt(speciesParts[speciesParts.length - 2]),
-            url: pokemon.pokemon_species.url,
-          };
-        })
-        .map((pokemonBasic) => {
-          const existingIndex = state.findIndex(
-            (pokemonState) => pokemonState.id === pokemonBasic.id
-          );
-          if (existingIndex !== -1) {
-            const pokemonState = state[existingIndex];
-            pokemonBasic = {
-              ...pokemonState,
-              ...pokemonBasic,
-            };
-          }
+  on(retreivedPokemonData, (state, { Pokemon }) => {
+    const existingPokemon = state.findIndex(
+      (pokemon) => pokemon.id === Pokemon.id
+    );
 
-          return pokemonBasic;
-        });
-
-      return [...pokemonBasic];
+    if (existingPokemon === -1) {
+      return [...state, ...[Pokemon]];
     }
-  )
+
+    const newPokemon = {
+      ...state[existingPokemon],
+      ...Pokemon,
+    };
+    state = state.map((existingState) => {
+      if (existingState.id === newPokemon.id) {
+        return newPokemon;
+      }
+      return existingState;
+    });
+
+    return [...state];
+  })
 );

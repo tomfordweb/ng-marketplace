@@ -5,8 +5,3 @@ export const retreiveGameVersionList = createAction(
   "[Game Version] Retreive Game Version List",
   props<{ GameVersions: GameVersion[] }>()
 );
-
-export const setActiveGameVersion = createAction(
-  "[Game Version] Set Active Game Version",
-  props<{ GameVersion: GameVersion }>()
-);

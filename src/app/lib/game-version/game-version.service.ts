@@ -8,6 +8,7 @@ import { GameVersionsApiResponse } from "./gane-versions-api-response";
 import { INDEXED_DB_CONFIG } from "../../tokens";
 import { IndexedDbConfig } from "../../indexed-db-config";
 import { CachedRequestService } from "../../cached-request.service";
+import { extractIdFromEndOfUrl } from "../extract-id-from-url";
 
 @Injectable()
 export class GameVersionService {
@@ -30,7 +31,15 @@ export class GameVersionService {
                 "https://pokeapi.co/api/v2/version-group"
               )
               .pipe(
-                map((response) => response.results || []),
+                map(
+                  (response) =>
+                    response.results.map((result) => {
+                      return {
+                        ...result,
+                        id: extractIdFromEndOfUrl(result.url),
+                      };
+                    }) || []
+                ),
                 // store the data in indexeddb!
                 tap((gameVersions: GameVersion[]) =>
                   this.cachedRequestService.update$(this.config, gameVersions)

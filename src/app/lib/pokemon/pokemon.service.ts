@@ -7,32 +7,53 @@ import { INDEXED_DB_CONFIG } from "../../tokens";
 import { IndexedDbConfig } from "../../indexed-db-config";
 import { CachedRequestService } from "../../cached-request.service";
 import { Pokemon } from "./pokemon";
-
+import { POKEMON_INDEXED_DB_CONFIG } from "./pokemon.indexed-db";
 @Injectable()
 export class PokemonService {
   constructor(
-    @Inject(INDEXED_DB_CONFIG) private config: IndexedDbConfig,
     private cachedRequestService: CachedRequestService,
     private http: HttpClient
   ) {}
 
-  getPokemonById(pokemonId: number): Observable<Pokemon> {
+  getById$(pokemonId: number): Observable<Pokemon> {
     return (
       this.cachedRequestService
         // attempt to get from cache
-        .getById$(this.config, pokemonId)
+        .getById$(POKEMON_INDEXED_DB_CONFIG, pokemonId)
         .pipe(
           catchError((error) => {
             // If we failed to retreive it from the cache, return the api request
             return this.http
-              .get<Pokemon>(
-                `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`
-              )
+              .get<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`)
               .pipe(
                 // store the data in indexeddb!
                 tap((pokemonResponse: Pokemon) =>
                   this.cachedRequestService.updateEntity$(
-                    this.config,
+                    POKEMON_INDEXED_DB_CONFIG,
+                    pokemonResponse
+                  )
+                )
+              );
+          })
+        )
+    );
+  }
+
+  getByName$(pokemonName: string): Observable<Pokemon> {
+    return (
+      this.cachedRequestService
+        // attempt to get from cache
+        .getByProperty$(POKEMON_INDEXED_DB_CONFIG, "name", pokemonName)
+        .pipe(
+          catchError((error) => {
+            // If we failed to retreive it from the cache, return the api request
+            return this.http
+              .get<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
+              .pipe(
+                // store the data in indexeddb!
+                tap((pokemonResponse: Pokemon) =>
+                  this.cachedRequestService.updateEntity$(
+                    POKEMON_INDEXED_DB_CONFIG,
                     pokemonResponse
                   )
                 )

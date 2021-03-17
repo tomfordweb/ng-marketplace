@@ -1,8 +1,8 @@
 import { createAction, props } from "@ngrx/store";
-import { PokedexApiResponse } from "../lib/pokedex/pokedex-api-response";
+import { PokemonSpecies } from "../lib/pokemon-species/pokemon-species";
 import { Pokemon } from "../lib/pokemon/pokemon";
 
-export const retrievedPokemonInformationFromPokedexResponse = createAction(
-  "[Pokemon] Retreive Pokemon names from Pokedex response",
-  props<{ PokedexApiResponse: PokedexApiResponse }>()
+export const retreivedPokemonData = createAction(
+  "[Pokemon] Retreive pokemon data",
+  props<{ Pokemon: Pokemon }>()
 );

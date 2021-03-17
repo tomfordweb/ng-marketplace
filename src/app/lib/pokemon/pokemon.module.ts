@@ -1,8 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { POKEMON_INDEXED_DB_CONFIG } from "./pokemon.indexed-db";
 import { INDEXED_DB_CONFIG } from "../../tokens";
-import { GameVersionService } from "../game-version/game-version.service";
+import { POKEMON_INDEXED_DB_CONFIG } from "./pokemon.indexed-db";
 import { PokemonService } from "./pokemon.service";
 
 @NgModule({
