@@ -6,7 +6,7 @@ import { PokedexService } from "src/app/lib/pokedex/pokedex.service";
 import { selectGameVersionByRouterParam } from "src/app/state/game-versions.selector";
 import { retreivedAllPokedexesForGame } from "src/app/state/pokedex.actions";
 import { selectActivePokedexByGameVersionRouterParam } from "src/app/state/pokedex.selector";
-import { retrievedPokemonInformationFromMultiplePokedexResponse } from "src/app/state/pokemon.actions";
+import { retreivedBasicSpeciesListFromPokedex } from "src/app/state/pokemon-species.actions";
 
 @Component({
   selector: "app-select-a-pokemon",
@@ -56,7 +56,7 @@ export class SelectAPokemonComponent implements OnInit {
             retreivedAllPokedexesForGame({ MultiplePokedexApiResponse })
           );
           this.store.dispatch(
-            retrievedPokemonInformationFromMultiplePokedexResponse({
+            retreivedBasicSpeciesListFromPokedex({
               MultiplePokedexApiResponse,
             })
           );

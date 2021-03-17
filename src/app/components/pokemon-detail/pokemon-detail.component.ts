@@ -1,11 +1,13 @@
 import { HttpParams } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { select, Store } from "@ngrx/store";
-import { EMPTY, of, throwError } from "rxjs";
+import { combineLatest, EMPTY, of, throwError } from "rxjs";
 import { filter, switchMap, tap } from "rxjs/operators";
 import { PokemonSpeciesService } from "src/app/lib/pokemon-species/pokemon-species.service";
-import { retreivedPokemon } from "src/app/state/pokemon.actions";
-import { selectActivePokemonByRouterParam } from "src/app/state/pokemon.selector";
+import { PokemonService } from "src/app/lib/pokemon/pokemon.service";
+import { retreivedPokemonSpeciesData } from "src/app/state/pokemon-species.actions";
+import { selectActivePokemonByRouterParam } from "src/app/state/pokemon-species.selector";
+import { retreivedPokemonData } from "src/app/state/pokemon.actions";
 import { selectRouteParams } from "src/app/state/router.selectors";
 
 @Component({
@@ -23,16 +25,29 @@ export class PokemonDetailComponent implements OnInit {
   pokemonRequest$ = this.store.pipe(
     select(selectRouteParams),
     switchMap((params) => {
+      const id = parseInt(params.versionPokemon);
+      console.log({ params });
+      if (!!params.pokemonName) {
+        return combineLatest([
+          this.pokemonService.getByName$(params.pokemonName),
+          this.pokemonSpeciesService.getByName$(params.pokemonName),
+        ]);
+      }
       if (!!params.versionPokemon) {
-        return this.pokemonSpeciesService.getByPokemonId$(
-          parseInt(params.versionPokemon)
-        );
+        return combineLatest([
+          this.pokemonService.getById$(id),
+          this.pokemonSpeciesService.getById$(id),
+        ]);
       }
       return EMPTY;
     }),
-    tap((PokemonApi) => this.store.dispatch(retreivedPokemon({ PokemonApi })))
+    tap(([Pokemon, PokemonSpecies]) => {
+      this.store.dispatch(retreivedPokemonData({ Pokemon }));
+      this.store.dispatch(retreivedPokemonSpeciesData({ PokemonSpecies }));
+    })
   );
   constructor(
+    private pokemonService: PokemonService,
     private pokemonSpeciesService: PokemonSpeciesService,
     private store: Store
   ) {}

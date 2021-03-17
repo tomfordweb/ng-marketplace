@@ -10,7 +10,6 @@ import { PokemonSpeciesLibModule } from "../lib/pokemon-species/pokemon-species.
   declarations: [BasePokemonDetailComponent],
   imports: [
     CommonModule,
-    PokemonSpeciesLibModule,
     PokemonDetailRoutingModule,
     PokemonDetailComponentModule,
   ],

@@ -1,17 +1,8 @@
-import { decimalDigest } from "@angular/compiler/src/i18n/digest";
 import { createAction, props } from "@ngrx/store";
-import {
-  MultiplePokedexApiResponse,
-  PokedexApiResponse,
-} from "../lib/pokedex/pokedex-api-response";
 import { PokemonSpecies } from "../lib/pokemon-species/pokemon-species";
+import { Pokemon } from "../lib/pokemon/pokemon";
 
-export const retreivedPokemon = createAction(
-  "[Pokemon] Retreive pokemon",
-  props<{ PokemonApi: PokemonSpecies }>()
-);
-
-export const retrievedPokemonInformationFromMultiplePokedexResponse = createAction(
-  "[Pokemon] Retreive basic Pokemon information from Pokedex response",
-  props<{ MultiplePokedexApiResponse: MultiplePokedexApiResponse }>()
+export const retreivedPokemonData = createAction(
+  "[Pokemon] Retreive pokemon data",
+  props<{ Pokemon: Pokemon }>()
 );

@@ -17,10 +17,21 @@ export class CachedRequestService {
     );
   }
 
+  getByProperty$(config: IndexedDbConfig, prop: string, value: IDBValidKey) {
+    return this.db.getByIndex(config.key, prop, value).pipe(
+      tap((item) => {
+        console.log("from cache", config, item);
+        // factory the data into the appropriate stores
+        if (item === null || item === undefined) {
+          throw new Error(`no results for ${value}`);
+        }
+      })
+    );
+  }
   getById$(config: IndexedDbConfig, id: number) {
     return this.db.getByKey(config.key, id).pipe(
       tap((item) => {
-        console.log("crom cache", id, item);
+        console.log("from cache", config, item);
         // factory the data into the appropriate stores
         if (item === null || item === undefined) {
           throw new Error(`no results for ${id}`);

@@ -12,9 +12,10 @@ import { environment } from "../environments/environment"; // Angular CLI enviro
 import { DBConfig, NgxIndexedDBModule } from "ngx-indexed-db";
 import { GameVersionModule } from "./lib/game-version/game-version.module";
 import { pokedexReducer } from "./state/pokedex.reducer";
-import { pokemonReducer } from "./state/pokemon.reducer";
+import { pokemonSpeciesReducer } from "./state/pokemon-species.reducer";
 import { routerReducer, StoreRouterConnectingModule } from "@ngrx/router-store";
 import { APP_INDEXED_DB_CONFIG } from "./lib/indexed-db/indexed-db.config";
+import { pokemonReducer } from "./state/pokemon.reducer";
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,6 +30,7 @@ import { APP_INDEXED_DB_CONFIG } from "./lib/indexed-db/indexed-db.config";
       gameVersions: gameVersionsReducer,
       pokedex: pokedexReducer,
       router: routerReducer,
+      pokemonSpecies: pokemonSpeciesReducer,
       pokemon: pokemonReducer,
     }),
     NgxIndexedDBModule.forRoot(APP_INDEXED_DB_CONFIG),

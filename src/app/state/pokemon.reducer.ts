@@ -3,44 +3,32 @@ import { extractIdFromEndOfUrl } from "../lib/extract-id-from-url";
 import { GameVersion } from "../lib/game-version/game-version";
 import { PokedexApiResponse } from "../lib/pokedex/pokedex-api-response";
 import { PokemonSpecies } from "../lib/pokemon-species/pokemon-species";
+import { Pokemon } from "../lib/pokemon/pokemon";
 import { AppState } from "./app.state";
 
 import { retreiveGameVersionList } from "./game-versions.actions";
 import {
-  retreivedPokemon,
-  retrievedPokemonInformationFromMultiplePokedexResponse,
-} from "./pokemon.actions";
+  retreivedPokemonSpeciesData,
+  retreivedBasicSpeciesListFromPokedex,
+} from "./pokemon-species.actions";
+import { retreivedPokemonData } from "./pokemon.actions";
 
-export const initialState: ReadonlyArray<PokemonSpecies> = [];
-
-export const factoryBasicPokemonInformationFromPokedexApiResponse = (
-  PokedexApiResponse: PokedexApiResponse
-) => {
-  const pokemonBasic: PokemonSpecies[] = PokedexApiResponse.pokemon_entries.map(
-    (pokemon) => {
-      return {
-        name: pokemon.pokemon_species.name,
-        id: extractIdFromEndOfUrl(pokemon.pokemon_species.url),
-        url: pokemon.pokemon_species.url,
-      };
-    }
-  );
-  return pokemonBasic;
-};
+export const initialState: ReadonlyArray<Pokemon> = [];
 
 export const pokemonReducer = createReducer(
   initialState,
-  on(retreivedPokemon, (state, { PokemonApi }) => {
-    console.log(state);
+  on(retreivedPokemonData, (state, { Pokemon }) => {
     const existingPokemon = state.findIndex(
-      (pokemon) => pokemon.id === PokemonApi.id
+      (pokemon) => pokemon.id === Pokemon.id
     );
+
     if (existingPokemon === -1) {
-      return [...state, ...[PokemonApi]];
+      return [...state, ...[Pokemon]];
     }
+
     const newPokemon = {
       ...state[existingPokemon],
-      ...PokemonApi,
+      ...Pokemon,
     };
     state = state.map((existingState) => {
       if (existingState.id === newPokemon.id) {
@@ -50,17 +38,5 @@ export const pokemonReducer = createReducer(
     });
 
     return [...state];
-  }),
-  on(
-    retrievedPokemonInformationFromMultiplePokedexResponse,
-    (state, { MultiplePokedexApiResponse }) => {
-      const manyPokedexes = Object.values(MultiplePokedexApiResponse)
-        .map((item) =>
-          factoryBasicPokemonInformationFromPokedexApiResponse(item)
-        )
-        .reduce((accumulator, pokedex) => accumulator.concat(pokedex), []);
-
-      return [...state, ...manyPokedexes];
-    }
-  )
+  })
 );

@@ -27,7 +27,7 @@ import {
   retreivedAllPokedexesForGame,
   retreivedPokedexContents,
 } from "../state/pokedex.actions";
-import { retrievedPokemonInformationFromMultiplePokedexResponse } from "../state/pokemon.actions";
+import { retreivedBasicSpeciesListFromPokedex } from "../state/pokemon-species.actions";
 import { selectActivePokedexByGameVersionRouterParam } from "../state/pokedex.selector";
 
 @Component({
