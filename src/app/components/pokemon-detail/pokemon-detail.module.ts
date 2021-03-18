@@ -4,6 +4,7 @@ import { RouterModule } from "@angular/router";
 import { PokemonSpeciesLibModule } from "src/app/lib/pokemon-species/pokemon-species.module";
 import { PokemonLibModule } from "src/app/lib/pokemon/pokemon.module";
 import { CheckmarkItemModule } from "../checkmark-item/checkmark-item.module";
+import { PokemonSeenInGamesModule } from "../pokemon-seen-in-games/pokemon-seen-in-games.module";
 import { PokemonDetailComponent } from "./pokemon-detail.component";
 
 @NgModule({
@@ -12,6 +13,7 @@ import { PokemonDetailComponent } from "./pokemon-detail.component";
     PokemonSpeciesLibModule,
     PokemonLibModule,
     CommonModule,
+    PokemonSeenInGamesModule,
     CheckmarkItemModule,
   ],
   declarations: [PokemonDetailComponent],

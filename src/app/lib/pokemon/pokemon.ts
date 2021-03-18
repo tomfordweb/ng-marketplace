@@ -1,3 +1,4 @@
+import { PokemonGameIndex } from "src/app/interfaces/pokemon-game-index.interface";
 import { GameVersion } from "../game-version/game-version";
 
 export interface Pokemon {
@@ -82,13 +83,8 @@ export interface Pokemon {
     }[];
   }[];
 
-  game_indicies: {
-    game_index: number;
-    version: {
-      name: string;
-      url: string;
-    }[];
-  };
+  game_indices: PokemonGameIndex[];
+
   forms: {
     name: string;
     url: string;

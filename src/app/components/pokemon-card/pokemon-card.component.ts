@@ -6,7 +6,7 @@ import { Pokemon } from "src/app/lib/pokemon/pokemon";
   selector: "app-pokemon-card",
   template: `<figure *ngIf="!!pokemon">
     <a [routerLink]="['/pokemon', pokemon.name]">
-      <img loading="lazy" src="https://via.placeholder.com/150" />
+      <img loading="lazy" src="https://via.placeholder.com/50" />
 
       <ng-content></ng-content>
     </a>

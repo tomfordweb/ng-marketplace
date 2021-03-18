@@ -18,7 +18,7 @@ export const selectActivePokemonByRouterParam = createSelector(
   selectAllPokemon,
   (routeParams, allPokemon: Pokemon[]) => {
     return allPokemon.filter(
-      (pokemon) => pokemon.id == routeParams.versionPokemon
+      (pokemon) => pokemon.name == routeParams.pokemonName
     )[0];
   }
 );

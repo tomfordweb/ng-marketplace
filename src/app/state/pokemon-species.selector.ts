@@ -12,7 +12,7 @@ export const selectAllPokemon = createSelector(
   (pokemon: Array<PokemonSpecies>) => pokemon
 );
 
-export const selectActivePokemonByRouterParam = createSelector(
+export const selectActivePokemonSpeciesByRouterParam = createSelector(
   selectRouteParams,
   selectAllPokemon,
   (routeParams, allPokemon: PokemonSpecies[]) => {

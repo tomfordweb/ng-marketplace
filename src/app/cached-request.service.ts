@@ -20,8 +20,8 @@ export class CachedRequestService {
   getByProperty$(config: IndexedDbConfig, prop: string, value: IDBValidKey) {
     return this.db.getByIndex(config.key, prop, value).pipe(
       tap((item) => {
-        console.log("from cache", config, item);
-        // factory the data into the appropriate stores
+        // console.log("from cache", config, item);
+        // factory the data into the appropriate store
         if (item === null || item === undefined) {
           throw new Error(`no results for ${value}`);
         }
@@ -31,7 +31,7 @@ export class CachedRequestService {
   getById$(config: IndexedDbConfig, id: number) {
     return this.db.getByKey(config.key, id).pipe(
       tap((item) => {
-        console.log("from cache", config, item);
+        // console.log("from cache", config, item);
         // factory the data into the appropriate stores
         if (item === null || item === undefined) {
           throw new Error(`no results for ${id}`);
@@ -41,7 +41,7 @@ export class CachedRequestService {
   }
 
   updateEntity$(config: IndexedDbConfig, data: any) {
-    console.log("saving in cache", config, data);
+    // console.log("saving in cache", config, data);
     this.db.update(config.key, data);
   }
   update$(config: IndexedDbConfig, data: any[]) {

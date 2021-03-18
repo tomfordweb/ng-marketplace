@@ -24,8 +24,10 @@ import { retreivedBasicSpeciesListFromPokedex } from "src/app/state/pokemon-spec
         *ngFor="let pokemon of pokedex.pokemon"
         [pokemon]="pokemon"
       >
-        {{ pokemon.entry }}<br />
-        {{ pokemon.name }}
+        <p>
+          {{ pokemon.entry }}<br />
+          {{ pokemon.name }}
+        </p>
       </app-pokemon-card>
     </ng-container>
   </div>`,

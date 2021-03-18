@@ -1,14 +1,8 @@
-import { HttpParams } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { select, Store } from "@ngrx/store";
-import { combineLatest, EMPTY, of, throwError } from "rxjs";
-import { filter, switchMap, tap } from "rxjs/operators";
-import { PokemonSpeciesService } from "src/app/lib/pokemon-species/pokemon-species.service";
-import { PokemonService } from "src/app/lib/pokemon/pokemon.service";
-import { retreivedPokemonSpeciesData } from "src/app/state/pokemon-species.actions";
-import { selectActivePokemonByRouterParam } from "src/app/state/pokemon-species.selector";
-import { retreivedPokemonData } from "src/app/state/pokemon.actions";
-import { selectRouteParams } from "src/app/state/router.selectors";
+import { filter } from "rxjs/operators";
+import { selectActivePokemonSpeciesByRouterParam } from "src/app/state/pokemon-species.selector";
+import { selectActivePokemonByRouterParam } from "src/app/state/pokemon.selector";
 
 @Component({
   selector: "app-pokemon-detail",
@@ -16,41 +10,16 @@ import { selectRouteParams } from "src/app/state/router.selectors";
   styleUrls: ["./pokemon-detail.component.scss"],
 })
 export class PokemonDetailComponent implements OnInit {
-  pokemon$ = this.store.pipe(
-    select(selectActivePokemonByRouterParam),
-    filter((pokemon) => pokemon !== undefined),
-    tap((pmon) => console.log(pmon))
+  pokemonSpecies$ = this.store.pipe(
+    select(selectActivePokemonSpeciesByRouterParam),
+    filter((pokemon) => pokemon !== undefined)
   );
 
-  pokemonRequest$ = this.store.pipe(
-    select(selectRouteParams),
-    switchMap((params) => {
-      const id = parseInt(params.versionPokemon);
-      console.log({ params });
-      if (!!params.pokemonName) {
-        return combineLatest([
-          this.pokemonService.getByName$(params.pokemonName),
-          this.pokemonSpeciesService.getByName$(params.pokemonName),
-        ]);
-      }
-      if (!!params.versionPokemon) {
-        return combineLatest([
-          this.pokemonService.getById$(id),
-          this.pokemonSpeciesService.getById$(id),
-        ]);
-      }
-      return EMPTY;
-    }),
-    tap(([Pokemon, PokemonSpecies]) => {
-      this.store.dispatch(retreivedPokemonData({ Pokemon }));
-      this.store.dispatch(retreivedPokemonSpeciesData({ PokemonSpecies }));
-    })
+  pokemon$ = this.store.pipe(
+    select(selectActivePokemonByRouterParam),
+    filter((pokemon) => pokemon !== undefined)
   );
-  constructor(
-    private pokemonService: PokemonService,
-    private pokemonSpeciesService: PokemonSpeciesService,
-    private store: Store
-  ) {}
+  constructor(private store: Store) {}
 
   ngOnInit(): void {}
 }
