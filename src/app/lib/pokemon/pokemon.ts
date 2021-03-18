@@ -1,3 +1,4 @@
+import { PokemonAbility } from "src/app/interfaces/pokemon-ability.interface";
 import { PokemonGameIndex } from "src/app/interfaces/pokemon-game-index.interface";
 import { GameVersion } from "../game-version/game-version";
 
@@ -90,12 +91,5 @@ export interface Pokemon {
     url: string;
   }[];
 
-  abilities: {
-    ability: {
-      name: string;
-      url: string;
-    };
-    is_hidden: boolean;
-    slot: number;
-  }[];
+  abilities: PokemonAbility[];
 }

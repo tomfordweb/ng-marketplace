@@ -15,7 +15,7 @@
       <img src="https://via.placeholder.com/300" />
     </article>
     <article>
-      <dl *ngIf="!!data.species">
+      <dl *ngIf="!!data.species && !!data.pokemon">
         <dt>Base Happiness</dt>
         <dd>{{ data.species.base_happiness }}</dd>
 
@@ -45,6 +45,12 @@
         *ngIf="!!data.pokemon"
         [games]="data.pokemon.game_indices"
       ></app-pokemon-seen-in-games>
+
+      <app-pokemon-abilities
+        *ngIf="!!data.pokemon"
+        title="Abilities"
+        [abilities]="data.pokemon.abilities"
+      ></app-pokemon-abilities>
     </article>
   </section>
 </ng-container>
